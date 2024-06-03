@@ -160,8 +160,9 @@ function SideBar(props) {
         params.append('categoryId', categoryIdSB);
 
         for(const choice of selectedChoices) {
+            let i = 0;
             for(const value of choice.values) {
-                params.append(`specifications[${choice.specificationId}]`, value);
+                params.append(`specifications[${choice.specificationId}][${i++}]`, value);
             }
         }
 
