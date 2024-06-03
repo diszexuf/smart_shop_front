@@ -1,0 +1,13 @@
+.carousel-image {
+    width: 100%;
+    /*max-width: 600px;*/
+    height: 600px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit:cover;
+}
+
+.carousel-item {
+    text-align: center;
+}

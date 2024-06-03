@@ -1,0 +1,12 @@
+@import url('leaflet/dist/leaflet.css');
+
+* {
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+}
+
+h1, h2, h3 {
+    font-family: "Roboto Slab", sans-serif;
+    font-weight: normal;
+}
