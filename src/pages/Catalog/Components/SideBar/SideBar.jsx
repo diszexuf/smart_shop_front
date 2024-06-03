@@ -66,7 +66,7 @@ function SideBar(props) {
             console.log(error);
         }
 
-
+        // todo исправить добавление
         console.log('Finding products with filters:', selectedChoices);
     }
 
