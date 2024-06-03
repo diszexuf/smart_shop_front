@@ -3,7 +3,7 @@ import {ShoppingCart, Person} from '@mui/icons-material';
 import MapIcon from '@mui/icons-material/Map';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "../../pages/Home/Home.jsx";
-import SignIn from "../../pages/SignIn/SignIn.jsx";
+import SignInUp from "../../pages/SignInUp/SignInUp.jsx";
 import Address from "../../pages/Address/Address.jsx";
 import Cart from "../../pages/Cart/Cart.jsx";
 import Catalog from "../../pages/Catalog/Catalog.jsx";
@@ -50,7 +50,7 @@ function Header() {
 
                 <Routes>
                     <Route path="/home" element={<Home/>}/>
-                    <Route path="/sign_in" element={<SignIn/>}/>
+                    <Route path="/sign_in" element={<SignInUp/>}/>
                     <Route path="/addresses" element={<Address/>}/>
                     <Route path="/cart" element={<Cart/>}/>
 

@@ -1,6 +1,6 @@
 function Cart() {
     return(
-        <Container>
+        <Container className='min-vh-100'>
             <h1>Корзина</h1>
 
         </Container>

@@ -2,8 +2,8 @@ import {Container} from "react-bootstrap";
 import PropTypes from "prop-types";
 import './Catalog.css'
 import {Box} from "@mui/material";
-import SideBar from "./Components/SideBar/SideBar.jsx";
-import ProductCard from './Components/ProductCard/ProductCard.jsx'
+import SideBar from "../../components/SideBar/SideBar.jsx";
+import ProductCard from '../../components/ProductCard/ProductCard.jsx'
 
 function Catalog(props) {
 
@@ -73,7 +73,7 @@ function Catalog(props) {
 
 
     return (
-        <Container className='mt-5'>
+        <Container className='mt-5 min-vh-100'>
             <h1 className='mb-5'>{category}</h1>
             <div className="d-flex">
 

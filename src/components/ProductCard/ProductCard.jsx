@@ -2,7 +2,7 @@ import {Image} from "react-bootstrap";
 import './ProductCard.css'
 import PropTypes from 'prop-types';
 import {Box} from "@mui/material";
-import examImg from '../../smart.jpg'
+import examImg from '../../pages/Catalog/smart.jpg'
 
 
 function ProductCard(props) {
@@ -10,13 +10,6 @@ function ProductCard(props) {
 
     return (
         <>
-            {/*<Box className="card">*/}
-            {/*    <Image src={examImg} className='card-img' alt='product iamge'/>*/}
-            {/*    <h1>{brand}</h1>*/}
-            {/*    <h1>{model}</h1>*/}
-            {/*    <h1>{price}</h1>*/}
-            {/*</Box>*/}
-
             <Box className="card">
                 <Box className="card__top">
                     <a href="#" className="card__image">
@@ -33,7 +26,6 @@ function ProductCard(props) {
                     <button className="card__add">В корзину</button>
                 </Box>
             </Box>
-
         </>
     );
 }

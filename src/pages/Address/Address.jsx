@@ -13,7 +13,7 @@ const position = [55.159, 61.365];
 
 function Addresses() {
     return (
-        <Container className="mt-3">
+        <Container className="mt-3 min-vh-100">
             <h1>Как добраться?</h1>
             <Box className="how-to-arrive ">
                 <Box display="flex" justifyContent="space-between" alignItems="center">
