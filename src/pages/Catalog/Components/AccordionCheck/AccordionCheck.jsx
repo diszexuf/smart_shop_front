@@ -2,7 +2,7 @@ import { Accordion, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 function AccordionCheck(props) {
-    const { title, choices, eventKey, selectedChoices, handleCheckboxChange } = props;
+    const { title, choices, eventKey, selectedChoices,specificationId, handleCheckboxChange } = props;
 
     return (
         <>
@@ -18,6 +18,7 @@ function AccordionCheck(props) {
                                     type="checkbox"
                                     id={`default-checkbox-${index}`}
                                     label={value}
+                                    data-specification_id={specificationId}
                                     onChange={(e) => handleCheckboxChange(e, value)}
                                     checked={selectedChoices.includes(value)}
                                 />
