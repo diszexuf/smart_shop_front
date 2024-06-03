@@ -1,23 +1,15 @@
-import React, { useState } from 'react';
 import { Accordion, Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 function AccordionCheck(props) {
-    const { title, choices, eventKey } = props;
-    const [selectedChoices, setSelectedChoices] = useState([]);
-
-    const handleCheckboxChange = (event, value) => {
-        if (event.target.checked) {
-            setSelectedChoices([...selectedChoices, value]);
-        } else {
-            setSelectedChoices(selectedChoices.filter(choice => choice !== value));
-        }
-    };
+    const { title, choices, eventKey, selectedChoices, handleCheckboxChange } = props;
 
     return (
         <>
             <Accordion.Item eventKey={eventKey}>
-                <Accordion.Header>{title} {selectedChoices.length > 0 ? `(${selectedChoices.length})` : ''}</Accordion.Header>
+                <Accordion.Header>
+                    {title} {selectedChoices.length > 0 ? `(${selectedChoices.length})` : ''}
+                </Accordion.Header>
                 <Accordion.Body>
                     <Form>
                         {choices.map((value, index) => (
@@ -27,6 +19,7 @@ function AccordionCheck(props) {
                                     id={`default-checkbox-${index}`}
                                     label={value}
                                     onChange={(e) => handleCheckboxChange(e, value)}
+                                    checked={selectedChoices.includes(value)}
                                 />
                             </div>
                         ))}
@@ -43,4 +36,6 @@ AccordionCheck.propTypes = {
     title: PropTypes.string.isRequired,
     choices: PropTypes.array.isRequired,
     eventKey: PropTypes.number.isRequired,
+    selectedChoices: PropTypes.array.isRequired,
+    handleCheckboxChange: PropTypes.func.isRequired,
 };
