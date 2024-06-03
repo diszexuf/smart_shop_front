@@ -106,6 +106,10 @@ import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
 import {useState, useEffect} from 'react';
 import {Box} from '@mui/material';
 
+const apiUrl = `http://localhost:8081/api/v1/products`;
+const filtersUrl = `${apiUrl}/filters`;
+const productListUrl = `${apiUrl}/all_products`;
+
 function SideBar(props) {
     const {categoryIdSB} = props;
     const [filters, setFilters] = useState([]);
@@ -114,7 +118,7 @@ function SideBar(props) {
     useEffect(() => {
         (async () => {
             try {
-                const response = await fetch(`http://localhost:8081/api/v1/products/filters?categoryId=${categoryIdSB}`);
+                const response = await fetch(`${filtersUrl}?categoryId=${categoryIdSB}`);
                 const data = await response.json();
                 setFilters(data);
                 console.log(data);
@@ -152,18 +156,16 @@ function SideBar(props) {
 
     // TODO запрос на выдачу товаров, удовлетворяющих фильтрам
     async function findProducts() {
-        const queryParams = {
-            categoryId: categoryIdSB,
-        };
+        const params = new URLSearchParams();
+        params.append('categoryId', categoryIdSB);
 
-        selectedChoices.forEach(choice => {
-            queryParams[`specifications[][${choice.specificationId}]`] = choice.values.join(',');
-        });
+        for(const choice of selectedChoices) {
+            for(const value of choice.values) {
+                params.append(`specifications[${choice.specificationId}]`, value);
+            }
+        }
 
-        console.log('queryParams', queryParams);
-
-        const queryString = new URLSearchParams(queryParams).toString();
-        const url = `http://localhost:8081/api/v1/products/all_products?${queryString}`;
+        const url = `${productListUrl}?${params.toString()}`;
 
         try {
             const response = await fetch(url);
