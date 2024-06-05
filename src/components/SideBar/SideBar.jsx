@@ -1,110 +1,10 @@
-// import {Accordion, Button} from 'react-bootstrap';
-// import './Sidebar.css';
-// import PropTypes from 'prop-types';
-// import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
-// import {useState, useEffect} from 'react';
-// import {Box} from '@mui/material';
-//
-// function SideBar(props) {
-//     const {categoryIdSB} = props;
-//     const [filters, setFilters] = useState([]);
-//     const [selectedChoices, setSelectedChoices] = useState({});
-//
-//     useEffect(() => {
-//         (async () => {
-//             try {
-//                 const response = await fetch(`https://localhost:8081/api/v1/products/filters?categoryId=${categoryIdSB}`);
-//                 const data = await response.json();
-//                 setFilters(data);
-//                 console.log(data);
-//             } catch (error) {
-//                 console.log(error);
-//             }
-//         })();
-//     }, [categoryIdSB]);
-//
-//     const handleCheckboxChange = (event, filterTitle, value) => {
-//         setSelectedChoices(prev => {
-//             const newChoices = {...prev};
-//             if (event.target.checked) {
-//                 if (!newChoices[filterTitle]) {
-//                     newChoices[filterTitle] = [];
-//                 }
-//                 newChoices[filterTitle].push(value);
-//             } else {
-//                 newChoices[filterTitle] = newChoices[filterTitle].filter(choice => choice !== value);
-//             }
-//             console.log(selectedChoices)
-//             return newChoices;
-//         });
-//     };
-//
-//     const resetCheckboxes = () => {
-//         setSelectedChoices({});
-//     };
-//
-//     // TODO запрос на выдачу товаров, удовлетворяющих фильтрам
-//     async function findProducts() {
-//         const queryParams = {
-//             categoryId : categoryIdSB,
-//
-//         }
-//
-//         const specificationId = 1;
-//         queryParams[`specifications[][${specificationId}]`] = "256";
-//
-//         console.log('queryParams', queryParams);
-//
-//         const queryString = new URLSearchParams(queryParams).toString();
-//         const url = `http://localhost:8081/api/v1/products/all_products?${queryString}`;
-//
-//         try {
-//             const response = await fetch(url);
-//             const data = await response.json();
-//             console.log('data', data);
-//         } catch (error) {
-//             console.log(error);
-//         }
-//
-//         // todo исправить добавление
-//         console.log('Finding products with filters:', selectedChoices);
-//     }
-//
-//     return (
-//         <div className='sidebar'>
-//             <Accordion defaultActiveKey={['0']} alwaysOpen>
-//                 {filters.map((filter, index) => (
-//                     < AccordionCheck
-//                         key={index}
-//                         specificationId={filter.specificationsId}
-//                         eventKey={index}
-//                         title={filter.title}
-//                         choices={filter.values}
-//                         selectedChoices={selectedChoices[filter.title] || []}
-//                         handleCheckboxChange={(event, value) => handleCheckboxChange(event, filter.title, value)}
-//                     />
-//                 ))}
-//             </Accordion>
-//             <Box className="content m-3 d-flex justify-content-center">
-//                 <Button className="m-3" variant="success" onClick={findProducts}>Подобрать</Button>{' '}
-//                 <Button className="m-3" variant="secondary" onClick={resetCheckboxes}>Очистить</Button>{' '}
-//             </Box>
-//         </div>
-//     );
-// }
-//
-// export default SideBar;
-//
-// SideBar.propTypes = {
-//     categoryIdSB: PropTypes.string.isRequired,
-// };
-
 import {Accordion, Button} from 'react-bootstrap';
 import './Sidebar.css';
 import PropTypes from 'prop-types';
 import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
 import {useState, useEffect} from 'react';
 import {Box} from '@mui/material';
+import PriceForm from "../AccordionPrice/PriceForm.jsx";
 
 const apiUrl = `https://localhost:8081/api/v1/products`;
 const filtersUrl = `${apiUrl}/filters`;
@@ -112,7 +12,9 @@ const productListUrl = `${apiUrl}/all_products`;
 
 function SideBar(props) {
     const {categoryIdSB} = props;
+
     const [filters, setFilters] = useState([]);
+    const [prices, setPrices] = useState([]);
     const [selectedChoices, setSelectedChoices] = useState([]);
 
     useEffect(() => {
@@ -120,8 +22,12 @@ function SideBar(props) {
             try {
                 const response = await fetch(`${filtersUrl}?categoryId=${categoryIdSB}`);
                 const data = await response.json();
-                setFilters(data);
-                console.log(data);
+                data.forEach(filter => filter.values.sort((a,b) => parseInt(a) - parseInt(b)));
+
+                const allPrices = data.find(val => val.title === "Цена").values.map(elem => parseInt(elem));
+                setPrices([allPrices[0], allPrices[allPrices.length - 1] ]);
+
+                setFilters(data.filter(item => item.title !== 'Цена'));
             } catch (error) {
                 console.log(error);
             }
@@ -143,7 +49,7 @@ function SideBar(props) {
                     }
                 }
             } else if (event.target.checked) {
-                newChoices.push({ specificationId, values: [value] });
+                newChoices.push({specificationId, values: [value]});
             }
 
             return newChoices;
@@ -154,14 +60,13 @@ function SideBar(props) {
         setSelectedChoices([]);
     };
 
-    // TODO запрос на выдачу товаров, удовлетворяющих фильтрам
     async function findProducts() {
         const params = new URLSearchParams();
         params.append('categoryId', categoryIdSB);
 
-        for(const choice of selectedChoices) {
+        for (const choice of selectedChoices) {
             let i = 0;
-            for(const value of choice.values) {
+            for (const value of choice.values) {
                 params.append(`specifications[${choice.specificationId}][${i++}]`, value);
             }
         }
@@ -171,17 +76,25 @@ function SideBar(props) {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            console.log('data', data);
+
+            console.log('products with filters', data);
         } catch (error) {
             console.log(error);
         }
-
-        console.log('Finding products with filters:', selectedChoices);
     }
+
 
     return (
         <div className='sidebar'>
+            <PriceForm
+                title="Цена"
+                minPrice={prices[0]}
+                maxPrice={prices[1]}
+            />
+
             <Accordion defaultActiveKey={['0']} alwaysOpen>
+
+
                 {filters.map((filter, index) => (
                     <AccordionCheck
                         key={index}

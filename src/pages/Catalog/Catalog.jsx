@@ -8,69 +8,6 @@ import ProductCard from '../../components/ProductCard/ProductCard.jsx'
 function Catalog(props) {
 
     const {category, categoryId} = props;
-    const PRODUCTS = [
-        {
-            id: 1,
-            model: 'Galaxy S21',
-            brand: 'Samsung',
-            price: 799
-        },
-        {
-            id: 2,
-            model: 'iPhone 12',
-            brand: 'Apple',
-            price: 999
-        },
-        {
-            id: 3,
-            model: 'Pixel 5',
-            brand: 'Google',
-            price: 699
-        },
-        {
-            id: 4,
-            model: 'OnePlus 9',
-            brand: 'OnePlus',
-            price: 729
-        },
-        {
-            id: 5,
-            model: 'Mi 11',
-            brand: 'Xiaomi',
-            price: 749
-        },
-        {
-            id: 6,
-            model: 'P40 Pro',
-            brand: 'Huawei',
-            price: 899
-        },
-        {
-            id: 7,
-            model: 'Xperia 5 II',
-            brand: 'Sony',
-            price: 949
-        },
-        {
-            id: 8,
-            model: 'Moto G Power',
-            brand: 'Motorola',
-            price: 249
-        },
-        {
-            id: 9,
-            model: 'Redmi Note 10',
-            brand: 'Xiaomi',
-            price: 199
-        },
-        {
-            id: 10,
-            model: 'Nord N10 5G',
-            brand: 'OnePlus',
-            price: 299
-        }
-    ];
-
 
     return (
         <Container className='mt-5 min-vh-100'>
@@ -82,14 +19,14 @@ function Catalog(props) {
                     <SideBar categoryIdSB={categoryId}/>
                 </Box>
                 <Box className="product-wrapper">
-                    {PRODUCTS.map((product) => (
-                        <ProductCard
-                            key={product.id}
-                            model={product.model}
-                            brand={product.brand}
-                            price={product.price}
-                        />
-                    ))}
+                    {/*{PRODUCTS.map((product) => (*/}
+                    {/*    <ProductCard*/}
+                    {/*        key={product.id}*/}
+                    {/*        model={product.model}*/}
+                    {/*        brand={product.brand}*/}
+                    {/*        price={product.price}*/}
+                    {/*    />*/}
+                    {/*))}*/}
 
                 </Box>
 
