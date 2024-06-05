@@ -13,7 +13,7 @@
 //     useEffect(() => {
 //         (async () => {
 //             try {
-//                 const response = await fetch(`http://localhost:8081/api/v1/products/filters?categoryId=${categoryIdSB}`);
+//                 const response = await fetch(`https://localhost:8081/api/v1/products/filters?categoryId=${categoryIdSB}`);
 //                 const data = await response.json();
 //                 setFilters(data);
 //                 console.log(data);
@@ -106,7 +106,7 @@ import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
 import {useState, useEffect} from 'react';
 import {Box} from '@mui/material';
 
-const apiUrl = `http://localhost:8081/api/v1/products`;
+const apiUrl = `https://localhost:8081/api/v1/products`;
 const filtersUrl = `${apiUrl}/filters`;
 const productListUrl = `${apiUrl}/all_products`;
 

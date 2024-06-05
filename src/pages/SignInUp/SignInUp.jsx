@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Form, Button, Col, Row, Alert } from 'react-bootstrap';
+import axios from 'axios';
 
 const SignIn = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -10,6 +11,7 @@ const SignIn = () => {
         confirmPassword: ''
     });
     const [formErrors, setFormErrors] = useState({});
+    const [user, setUser] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -59,6 +61,21 @@ const SignIn = () => {
         setFormErrors({});
         setMessage(null);
     };
+
+    const handleGoogleLogin = () => {
+        // Перенаправление пользователя на страницу входа Google OAuth 2.0
+        window.location.href = 'http://localhost:5173/api/v1/users/secured';
+    };
+
+    useEffect(() => {
+        axios.get('https://localhost:8081/user', { withCredentials: true })
+            .then(response => {
+                setUser(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching user", error);
+            });
+    }, []);
 
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100">
@@ -126,6 +143,16 @@ const SignIn = () => {
                                 {isLogin ? 'У меня нет аккаунта' : 'У меня уже есть аккаунт'}
                             </Button>
                         </Form>
+                        <hr />
+                        <Button className="mt-3" variant="danger" onClick={handleGoogleLogin}>
+                            Войти через Google
+                        </Button>
+                        {user && (
+                            <div className="mt-3">
+                                <h3>Добро пожаловать, {user.name}</h3>
+                                <p>Email: {user.email}</p>
+                            </div>
+                        )}
                     </Col>
                 </Row>
             </Container>

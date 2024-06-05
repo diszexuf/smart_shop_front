@@ -14,7 +14,7 @@ function Header() {
             <BrowserRouter>
                 <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
                     <Container>
-                        <Navbar.Brand href="/home">SmartShop</Navbar.Brand>
+                        <Navbar.Brand href="/">SmartShop</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="me-auto">
@@ -49,7 +49,7 @@ function Header() {
                 </Navbar>
 
                 <Routes>
-                    <Route path="/home" element={<Home/>}/>
+                    <Route path="/" element={<Home/>}/>
                     <Route path="/sign_in" element={<SignInUp/>}/>
                     <Route path="/addresses" element={<Address/>}/>
                     <Route path="/cart" element={<Cart/>}/>
