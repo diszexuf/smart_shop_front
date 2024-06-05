@@ -5,15 +5,17 @@ import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
 import {useState, useEffect} from 'react';
 import {Box} from '@mui/material';
 import PriceForm from "../AccordionPrice/PriceForm.jsx";
+import './SideBarMethods.jsx'
 
 const apiUrl = `https://localhost:8081/api/v1/products`;
 const filtersUrl = `${apiUrl}/filters`;
 const productListUrl = `${apiUrl}/all_products`;
 
 function SideBar(props) {
-    const {categoryIdSB} = props;
+    const {categoryIdSB, onHandleProductChange} = props;
 
     // Изменение цены
+    //todo добавить фильтрацию товара по цене
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
@@ -43,6 +45,8 @@ function SideBar(props) {
                 setPrices([allPrices[0], allPrices[allPrices.length - 1] ]);
 
                 setFilters(data.filter(item => item.title !== 'Цена'));
+
+                await findProducts();
             } catch (error) {
                 console.log(error);
             }
@@ -92,12 +96,15 @@ function SideBar(props) {
         try {
             const response = await fetch(url);
             const data = await response.json();
+            // onHandleProductChange(data);
+            console.log(data);
 
-            console.log('products with filters', data);
         } catch (error) {
             console.log(error);
         }
     }
+
+    findProducts();
 
     return (
         <div className='sidebar'>

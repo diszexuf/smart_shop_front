@@ -21,7 +21,6 @@ function PriceForm(props) {
                     type="number"
                     min={minPrice}
                     max={maxPrice}
-                    value={minPrice}
                     step="10"
                     id="priceFrom"
                     placeholder={minPrice}
@@ -33,7 +32,6 @@ function PriceForm(props) {
                     type="number"
                     min={minPrice}
                     max={maxPrice}
-                    value={maxPrice}
                     step="10"
                     id="priceTo"
                     placeholder={maxPrice}

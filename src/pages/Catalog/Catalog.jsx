@@ -4,34 +4,33 @@ import './Catalog.css'
 import {Box} from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar.jsx";
 import ProductCard from '../../components/ProductCard/ProductCard.jsx'
+import {useState} from "react";
 
 function Catalog(props) {
-
     const {category, categoryId} = props;
+    const [products, setProducts] = useState([]);
+
+    async function handleProductFilterChange(data) {
+        setProducts(data);
+    }
 
     return (
         <Container className='mt-5 min-vh-100'>
             <h1 className='mb-5'>{category}</h1>
             <div className="d-flex">
-
-
                 <Box className="sidebar">
-                    <SideBar categoryIdSB={categoryId}/>
+                    <SideBar categoryIdSB={categoryId} onHandleProductChange={handleProductFilterChange}/>
                 </Box>
+                <div></div>
                 <Box className="product-wrapper">
-                    {/*{PRODUCTS.map((product) => (*/}
-                    {/*    <ProductCard*/}
-                    {/*        key={product.id}*/}
-                    {/*        model={product.model}*/}
-                    {/*        brand={product.brand}*/}
-                    {/*        price={product.price}*/}
-                    {/*    />*/}
-                    {/*))}*/}
-
+                    {products.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            model={product.model}
+                            price={product.price}
+                        />
+                    ))}
                 </Box>
-
-
-
             </div>
         </Container>
     )

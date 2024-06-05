@@ -6,7 +6,7 @@ import examImg from '../../pages/Catalog/smart.jpg'
 
 
 function ProductCard(props) {
-    const {model, brand, price} = props;
+    const {model, price} = props;
 
     return (
         <>
@@ -21,7 +21,7 @@ function ProductCard(props) {
                         <Box className="card__price">Цена: {price}</Box>
                     </Box>
                     <a href="#" className="card__title">
-                        {brand + ' ' + model}
+                        {model}
                     </a>
                     <button className="card__add">В корзину</button>
                 </Box>
