@@ -13,9 +13,24 @@ const productListUrl = `${apiUrl}/all_products`;
 function SideBar(props) {
     const {categoryIdSB} = props;
 
+    // Изменение цены
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
+
+    const handleMinPriceChange = (value) => {
+        setMinPrice(value);
+    };
+
+    const handleMaxPriceChange = (value) => {
+        setMaxPrice(value);
+    };
+
+
+    // изменение фильтров
     const [filters, setFilters] = useState([]);
     const [prices, setPrices] = useState([]);
     const [selectedChoices, setSelectedChoices] = useState([]);
+
 
     useEffect(() => {
         (async () => {
@@ -60,6 +75,7 @@ function SideBar(props) {
         setSelectedChoices([]);
     };
 
+    // поиск товаров по криетриям
     async function findProducts() {
         const params = new URLSearchParams();
         params.append('categoryId', categoryIdSB);
@@ -83,13 +99,14 @@ function SideBar(props) {
         }
     }
 
-
     return (
         <div className='sidebar'>
             <PriceForm
                 title="Цена"
                 minPrice={prices[0]}
                 maxPrice={prices[1]}
+                onMinPriceChange={handleMinPriceChange}
+                onMaxPriceChange={handleMaxPriceChange}
             />
 
             <Accordion defaultActiveKey={['0']} alwaysOpen>

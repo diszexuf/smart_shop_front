@@ -1,7 +1,15 @@
 import {Form} from "react-bootstrap";
 
 function PriceForm(props) {
-    const {title, minPrice, maxPrice} = props;
+    const {title, minPrice, maxPrice, handleMinPriceChange, handleMaxPriceChange} = props;
+
+    const onHandleMinPriceChange = (event) => {
+        handleMinPriceChange(event.target.value);
+    };
+
+    const onHandleMaxPriceChange = (event) => {
+        handleMaxPriceChange(event.target.value);
+    };
 
     return (
         <div className='mb-3'>
@@ -17,6 +25,7 @@ function PriceForm(props) {
                     step="10"
                     id="priceFrom"
                     placeholder={minPrice}
+                    onChange={onHandleMinPriceChange}
                 />
 
                 <Form.Label className='m-1'>до</Form.Label>
@@ -28,6 +37,7 @@ function PriceForm(props) {
                     step="10"
                     id="priceTo"
                     placeholder={maxPrice}
+                    onChange={onHandleMaxPriceChange}
                 />
 
             </div>
