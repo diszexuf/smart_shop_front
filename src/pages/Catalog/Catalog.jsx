@@ -26,7 +26,7 @@ function Catalog(props) {
                     {products.map((product) => (
                         <ProductCard
                             key={product.id}
-                            model={product.model}
+                            model={product.title}
                             price={product.price}
                         />
                     ))}

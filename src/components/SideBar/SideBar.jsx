@@ -5,7 +5,6 @@ import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
 import {useState, useEffect} from 'react';
 import {Box} from '@mui/material';
 import PriceForm from "../AccordionPrice/PriceForm.jsx";
-import './SideBarMethods.jsx'
 
 const apiUrl = `https://localhost:8081/api/v1/products`;
 const filtersUrl = `${apiUrl}/filters`;
@@ -46,6 +45,7 @@ function SideBar(props) {
 
                 setFilters(data.filter(item => item.title !== 'Цена'));
 
+                console.log('source data', data);
                 await findProducts();
             } catch (error) {
                 console.log(error);
@@ -96,15 +96,13 @@ function SideBar(props) {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            // onHandleProductChange(data);
+            onHandleProductChange(data);
             console.log(data);
 
         } catch (error) {
             console.log(error);
         }
     }
-
-    findProducts();
 
     return (
         <div className='sidebar'>
@@ -115,10 +113,7 @@ function SideBar(props) {
                 onMinPriceChange={handleMinPriceChange}
                 onMaxPriceChange={handleMaxPriceChange}
             />
-
             <Accordion defaultActiveKey={['0']} alwaysOpen>
-
-
                 {filters.map((filter, index) => (
                     <AccordionCheck
                         key={index}

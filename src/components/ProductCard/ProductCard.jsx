@@ -31,7 +31,6 @@ function ProductCard(props) {
 }
 
 ProductCard.propTypes = {
-    brand: PropTypes.string.isRequired,
     model: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
 };
