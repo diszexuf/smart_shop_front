@@ -40,12 +40,10 @@ function SideBar(props) {
                 const data = await response.json();
                 data.forEach(filter => filter.values.sort((a,b) => parseInt(a) - parseInt(b)));
 
-                const allPrices = data.find(val => val.title === "Цена").values.map(elem => parseInt(elem));
-                setPrices([allPrices[0], allPrices[allPrices.length - 1] ]);
-
-                setFilters(data.filter(item => item.title !== 'Цена'));
-
+                //todo изменить получение цены
+                setFilters(data);
                 console.log('source data', data);
+
                 await findProducts();
             } catch (error) {
                 console.log(error);
@@ -97,7 +95,9 @@ function SideBar(props) {
             const response = await fetch(url);
             const data = await response.json();
             onHandleProductChange(data);
-            console.log(data);
+
+            const allPrices = data.map(val => val.price).sort();
+            setPrices([ allPrices[0], allPrices[allPrices.length - 1] ]);
 
         } catch (error) {
             console.log(error);
