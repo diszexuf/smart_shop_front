@@ -1,17 +1,25 @@
 import {Navbar, Nav, Form, FormControl, Container} from 'react-bootstrap';
 import {ShoppingCart, Person} from '@mui/icons-material';
 import MapIcon from '@mui/icons-material/Map';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Home from "../../pages/Home/Home.jsx";
-import SignInUp from "../../pages/SignInUp/SignInUp.jsx";
-import Address from "../../pages/Address/Address.jsx";
-import Cart from "../../pages/Cart/Cart.jsx";
-import Catalog from "../../pages/Catalog/Catalog.jsx";
+
+import {useEffect, useState} from "react";
 
 function Header() {
+
+    const [profileLink, setProfileLink] = useState('/sign_in');
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setProfileLink('/profile');
+        } else {
+            setProfileLink('/sign_in');
+        }
+    }, []);
+
     return (
         <>
-            <BrowserRouter>
+            {/*<BrowserRouter>*/}
                 <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
                     <Container>
                         <Navbar.Brand href="/">SmartShop</Navbar.Brand>
@@ -40,7 +48,7 @@ function Header() {
                                 <Nav.Link href="/cart">
                                     <ShoppingCart/>
                                 </Nav.Link>
-                                <Nav.Link href="/sign_in">
+                                <Nav.Link href={profileLink}>
                                     <Person/>
                                 </Nav.Link>
                             </Nav>
@@ -48,21 +56,20 @@ function Header() {
                     </Container>
                 </Navbar>
 
-                <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/sign_in" element={<SignInUp/>}/>
-                    <Route path="/addresses" element={<Address/>}/>
-                    <Route path="/cart" element={<Cart/>}/>
+                {/*<Routes>*/}
+                {/*    <Route path="/" element={<Home/>}/>*/}
+                {/*    <Route path="/sign_in" element={<SignInUp/>}/>*/}
+                {/*    <Route path="/addresses" element={<Address/>}/>*/}
+                {/*    <Route path="/cart" element={<Cart/>}/>*/}
 
-                    {/* TODO `Сделать запрос в backend для получения категорий`*/}
-                    <Route path="/catalog_smartphones" element={<Catalog category="Смартфоны" categoryId="1"/>}/>
-                    <Route path="/catalog_headphones" element={<Catalog category="Наушники" categoryId="2"/>}/>
-                    <Route path="/catalog_smartwatches" element={<Catalog category="Умные часы" categoryId="3"/>}/>
-                    <Route path="/catalog_accessories" element={<Catalog category="Аксессуары" categoryId="4"/>}/>
+                {/*    <Route path="/catalog_smartphones" element={<Catalog category="Смартфоны" categoryId="1"/>}/>*/}
+                {/*    <Route path="/catalog_headphones" element={<Catalog category="Наушники" categoryId="2"/>}/>*/}
+                {/*    <Route path="/catalog_smartwatches" element={<Catalog category="Умные часы" categoryId="3"/>}/>*/}
+                {/*    <Route path="/catalog_accessories" element={<Catalog category="Аксессуары" categoryId="4"/>}/>*/}
 
 
-                </Routes>
-            </BrowserRouter>
+                {/*</Routes>*/}
+            {/*</BrowserRouter>*/}
         </>
     );
 }

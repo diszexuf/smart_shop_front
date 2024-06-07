@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Form, Button, Col, Row, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const SignIn = () => {
+const SignInUp = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [message, setMessage] = useState(null);
     const [formValues, setFormValues] = useState({
-        email: '',
+        username: '',
         password: '',
         confirmPassword: ''
     });
     const [formErrors, setFormErrors] = useState({});
     const [user, setUser] = useState(null);
+    const [showAlert, setShowAlert] = useState(false);
+    const navigate = useNavigate();
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,10 +26,8 @@ const SignIn = () => {
 
     const validate = () => {
         const errors = {};
-        if (!formValues.email) {
-            errors.email = 'Электронная почта обязательна';
-        } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-            errors.email = 'Неверный формат электронной почты';
+        if (!formValues.username) {
+            errors.username = 'Логин обязателен';
         }
 
         if (!formValues.password) {
@@ -42,14 +43,39 @@ const SignIn = () => {
         return errors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const errors = validate();
         if (Object.keys(errors).length === 0) {
-            // Вы можете отправить запрос на сервер здесь
-            // Например, используя fetch или axios
-            console.log('Form data', formValues);
-            setMessage({ type: 'success', text: 'Форма успешно отправлена!' });
+
+            const url = isLogin ? 'https://localhost:8081/auth/login' : 'https://localhost:8081/auth/register';
+            const payload = {
+                username: formValues.username,
+                password: formValues.password,
+            };
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                console.log(data);
+
+                if (response.ok && data.token !== "") {
+                    localStorage.setItem('token', data.token);
+                    setUser(data.user);
+                    setMessage({ type: 'success', text: isLogin ? 'Вход выполнен успешно!' : 'Регистрация прошла успешно!' });
+                    navigate('/profile');
+                } else {
+                    setMessage({ type: 'danger', text: data.message || 'Неверный логин или пароль' });
+                }
+            } catch (error) {
+                setMessage({ type: 'danger', text: 'Произошла ошибка при подключении к серверу' });
+            }
             setFormErrors({});
         } else {
             setFormErrors(errors);
@@ -61,21 +87,6 @@ const SignIn = () => {
         setFormErrors({});
         setMessage(null);
     };
-
-    const handleGoogleLogin = () => {
-        // Перенаправление пользователя на страницу входа Google OAuth 2.0
-        window.location.href = 'http://localhost:5173/api/v1/users/secured';
-    };
-
-    useEffect(() => {
-        axios.get('https://localhost:8081/user', { withCredentials: true })
-            .then(response => {
-                setUser(response.data);
-            })
-            .catch(error => {
-                console.error("Error fetching user", error);
-            });
-    }, []);
 
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100">
@@ -89,21 +100,21 @@ const SignIn = () => {
                             </Alert>
                         )}
                         <Form onSubmit={handleSubmit} noValidate>
-                            <Form.Group controlId="formEmail">
-                                <Form.Label>Электронная почта</Form.Label>
+                            <Form.Group>
+                                <Form.Label>Логин</Form.Label>
                                 <Form.Control
-                                    type="email"
-                                    name="email"
-                                    value={formValues.email}
+                                    type="text"
+                                    name="username"
+                                    value={formValues.username}
                                     onChange={handleChange}
-                                    isInvalid={!!formErrors.email}
+                                    isInvalid={!!formErrors.username}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    {formErrors.email}
+                                    {formErrors.username}
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            <Form.Group controlId="formPassword">
+                            <Form.Group>
                                 <Form.Label>Пароль</Form.Label>
                                 <Form.Control
                                     type="password"
@@ -132,6 +143,7 @@ const SignIn = () => {
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             )}
+
                             <Button className="mt-3" variant="primary" type="submit">
                                 {isLogin ? 'Войти' : 'Регистрация'}
                             </Button>
@@ -143,16 +155,6 @@ const SignIn = () => {
                                 {isLogin ? 'У меня нет аккаунта' : 'У меня уже есть аккаунт'}
                             </Button>
                         </Form>
-                        <hr />
-                        <Button className="mt-3" variant="danger" onClick={handleGoogleLogin}>
-                            Войти через Google
-                        </Button>
-                        {user && (
-                            <div className="mt-3">
-                                <h3>Добро пожаловать, {user.name}</h3>
-                                <p>Email: {user.email}</p>
-                            </div>
-                        )}
                     </Col>
                 </Row>
             </Container>
@@ -160,4 +162,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default SignInUp;

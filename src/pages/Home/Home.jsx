@@ -29,19 +29,19 @@ function Home() {
                     <h2 className="my-4">Рекомендуемые продукты</h2>
                     <div className="col-md-4">
                         <div className="card mb-4">
-                            <ProductCard brand="Asus" model="ZenFone" price="76 000"/>
+                            <ProductCard productId={567} brand="Asus" model="ZenFone" price="76 000"/>
                         </div>
                     </div>
 
                     <div className="col-md-4">
                         <div className="card mb-4">
-                            <ProductCard brand="Osmos" model="VitriG" price="45 0000"/>
+                            <ProductCard productId={567} brand="Osmos" model="VitriG" price="45 0000"/>
                         </div>
                     </div>
 
                     <div className="col-md-4">
                         <div className="card mb-4">
-                            <ProductCard brand="Xiaomi" model="14 Ultra" price="60 000"/>
+                            <ProductCard productId={567} brand="Xiaomi" model="14 Ultra" price="60 000"/>
                         </div>
                     </div>
 

@@ -1,15 +1,16 @@
 import {Form} from "react-bootstrap";
 
 function PriceForm(props) {
-    const {title, minPrice, maxPrice, handleMinPriceChange, handleMaxPriceChange} = props;
+    const {title, minPrice, maxPrice, onMinPriceChange, onMaxPriceChange} = props;
 
     const onHandleMinPriceChange = (event) => {
-        handleMinPriceChange(event.target.value);
+        onMinPriceChange(event.target.value);
     };
 
     const onHandleMaxPriceChange = (event) => {
-        handleMaxPriceChange(event.target.value);
+        onMaxPriceChange(event.target.value);
     };
+
 
     return (
         <div className='mb-3'>

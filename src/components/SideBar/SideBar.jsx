@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
 import {useState, useEffect} from 'react';
 import {Box} from '@mui/material';
-import PriceForm from "../AccordionPrice/PriceForm.jsx";
+import PriceForm from "../PriceForm/PriceForm.jsx";
 
 const apiUrl = `https://localhost:8081/api/v1/products`;
 const filtersUrl = `${apiUrl}/filters`;
@@ -18,13 +18,13 @@ function SideBar(props) {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
-    const handleMinPriceChange = (value) => {
+    function handleMinPriceChange(value) {
         setMinPrice(value);
     };
 
-    const handleMaxPriceChange = (value) => {
+    function handleMaxPriceChange(value)  {
         setMaxPrice(value);
-    };
+    }
 
 
     // изменение фильтров
@@ -40,10 +40,7 @@ function SideBar(props) {
                 const data = await response.json();
                 data.forEach(filter => filter.values.sort((a,b) => parseInt(a) - parseInt(b)));
 
-                //todo изменить получение цены
                 setFilters(data);
-                console.log('source data', data);
-
                 await findProducts();
             } catch (error) {
                 console.log(error);
@@ -75,6 +72,11 @@ function SideBar(props) {
 
     const resetCheckboxes = () => {
         setSelectedChoices([]);
+        setMinPrice('');
+        setMaxPrice('');
+        //todo исправить баг со сбросом цены только после 2 нажатия
+        console.log('CLICK');
+        findProducts();
     };
 
     // поиск товаров по криетриям
@@ -88,14 +90,17 @@ function SideBar(props) {
                 params.append(`specifications[${choice.specificationId}][${i++}]`, value);
             }
         }
+        console.log('min Price', minPrice);
+        params.append('minPrice', minPrice);
+        params.append('maxPrice', maxPrice);
 
+        // console.log(params);
         const url = `${productListUrl}?${params.toString()}`;
 
         try {
             const response = await fetch(url);
             const data = await response.json();
             onHandleProductChange(data);
-
             const allPrices = data.map(val => val.price).sort();
             setPrices([ allPrices[0], allPrices[allPrices.length - 1] ]);
 
