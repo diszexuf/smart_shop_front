@@ -46,7 +46,7 @@ function Profile() {
     // };
 
     const handleUpdateUser = async (updatedUser) => {
-        // todo update data
+        // todo update data ( isNeed? )
         setUser(updatedUser);
     };
 

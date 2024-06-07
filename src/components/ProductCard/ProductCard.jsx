@@ -1,4 +1,4 @@
-import {Button, Image} from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import './ProductCard.css';
 import PropTypes from 'prop-types';
 import { Box } from "@mui/material";
@@ -10,16 +10,56 @@ function ProductCard(props) {
     const [quantity, setQuantity] = useState(0);
 
     const handleAddToCart = () => {
-        setQuantity(1);
-        localStorage.setItem();
+        const newQuantity = 1;
+        setQuantity(newQuantity);
+        console.log(newQuantity);
+
+        const cartArr = JSON.parse(localStorage.getItem('cart'));
+
+        cartArr.push({
+            productTitle: model,
+            productPrice: price,
+            productQuantity: newQuantity
+        });
+
+        localStorage.setItem('cart', JSON.stringify(cartArr));
     };
 
     const incrementQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
+        setQuantity(prevQuantity => {
+            const newQuantity = prevQuantity + 1;
+
+            updateCartQuantity(newQuantity);
+
+            return newQuantity;
+        });
     };
 
     const decrementQuantity = () => {
-        setQuantity(prevQuantity => (prevQuantity > 0 ? prevQuantity - 1 : 0));
+        setQuantity(prevQuantity => {
+            const newQuantity = prevQuantity > 0 ? prevQuantity - 1 : 0;
+
+            updateCartQuantity(newQuantity);
+
+            return newQuantity;
+        });
+    };
+
+    const updateCartQuantity = (newQuantity) => {
+        const cartArr = JSON.parse(localStorage.getItem('cart')) || [];
+        const productIndex = cartArr.findIndex(item => item.productTitle === model);
+
+        if (productIndex !== -1) {
+            cartArr[productIndex].productQuantity = newQuantity;
+        } else {
+            cartArr.push({
+                productTitle: model,
+                productPrice: price,
+                productQuantity: newQuantity
+            });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cartArr));
     };
 
     return (
