@@ -11,7 +11,7 @@ const SignInUp = () => {
         confirmPassword: ''
     });
     const [formErrors, setFormErrors] = useState({});
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({});
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ const SignInUp = () => {
                 });
                 const data = await response.json();
 
-                console.log(data);
+                console.log(data.user);
 
                 if (response.ok && data.token !== "") {
                     localStorage.setItem('token', data.token);

@@ -10,9 +10,31 @@ import SignInUp from "./pages/SignInUp/SignInUp.jsx";
 import Address from "./pages/Address/Address.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import Catalog from "./pages/Catalog/Catalog.jsx";
-
+import cart from "./pages/Cart/Cart.jsx";
 
 function App() {
+
+    if (!localStorage.hasOwnProperty('cart')) {
+        localStorage.setItem('cart', JSON.stringify([]));
+        let jsonArray = localStorage.getItem('cart');
+        console.log(jsonArray)
+        let myArray = JSON.parse(jsonArray);
+        console.log(myArray)
+
+        myArray.push(
+            {
+                title : "asda",
+                q: 2,
+            }
+        );
+        console.log(myArray)
+        jsonArray = JSON.stringify(myArray);
+        console.log(jsonArray)
+
+        localStorage.setItem('cart', jsonArray);
+
+    }
+
     return (
         <div className="d-flex flex-column min-vh-100">
             <Header/>
