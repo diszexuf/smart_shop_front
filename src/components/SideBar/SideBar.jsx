@@ -13,8 +13,6 @@ const productListUrl = `${apiUrl}/all_products`;
 function SideBar(props) {
     const {categoryIdSB, onHandleProductChange} = props;
 
-    // Изменение цены
-    //todo добавить фильтрацию товара по цене
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 

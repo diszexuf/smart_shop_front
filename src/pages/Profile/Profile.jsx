@@ -12,6 +12,8 @@ function Profile() {
     });
     const [orders, setOrders] = useState([]);
 
+    //todo статус заказов
+    //todo пикчи
     console.log('user data', user);
 
     // useEffect(() => {
