@@ -22,7 +22,7 @@ function SideBar(props) {
         setMinPrice(value);
     };
 
-    function handleMaxPriceChange(value)  {
+    function handleMaxPriceChange(value) {
         setMaxPrice(value);
     }
 
@@ -38,7 +38,7 @@ function SideBar(props) {
             try {
                 const response = await fetch(`${filtersUrl}?categoryId=${categoryIdSB}`);
                 const data = await response.json();
-                data.forEach(filter => filter.values.sort((a,b) => parseInt(a) - parseInt(b)));
+                data.forEach(filter => filter.values.sort((a, b) => parseInt(a) - parseInt(b)));
 
                 setFilters(data);
                 await findProducts();
@@ -72,12 +72,14 @@ function SideBar(props) {
 
     const resetCheckboxes = () => {
         setSelectedChoices([]);
-        setMinPrice('');
-        setMaxPrice('');
+        setMinPrice('0');
+        setMaxPrice('100000000');
+
         //todo исправить баг со сбросом цены только после 2 нажатия
-        console.log('CLICK');
-        findProducts();
+        console.log('CLICK RESET', minPrice, maxPrice);
+        findProducts()
     };
+
 
     // поиск товаров по криетриям
     async function findProducts() {
@@ -90,7 +92,6 @@ function SideBar(props) {
                 params.append(`specifications[${choice.specificationId}][${i++}]`, value);
             }
         }
-        console.log('min Price', minPrice);
         params.append('minPrice', minPrice);
         params.append('maxPrice', maxPrice);
 
@@ -102,8 +103,9 @@ function SideBar(props) {
             const data = await response.json();
             onHandleProductChange(data);
             const allPrices = data.map(val => val.price).sort();
-            setPrices([ allPrices[0], allPrices[allPrices.length - 1] ]);
+            setPrices([allPrices[0], allPrices[allPrices.length - 1]]);
 
+            console.log('DEBUG', data);
         } catch (error) {
             console.log(error);
         }

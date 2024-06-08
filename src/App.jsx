@@ -2,7 +2,6 @@ import Header from './components/Header/Header.jsx';
 import Footer from './components/Footer/Footer.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import {Switch} from "@mui/material";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Profile from "./pages/Profile/Profile.jsx";
 import Home from "./pages/Home/Home.jsx";
@@ -10,7 +9,9 @@ import SignInUp from "./pages/SignInUp/SignInUp.jsx";
 import Address from "./pages/Address/Address.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import Catalog from "./pages/Catalog/Catalog.jsx";
-import cart from "./pages/Cart/Cart.jsx";
+import ProductPage from "./AdminPages/ProductsPage.jsx";
+import CategoriesPage from "./AdminPages/CategoriesPage.jsx";
+import AdminPage from "./AdminPages/AdminPage.jsx";
 
 function App() {
 
@@ -24,6 +25,11 @@ function App() {
             <main className="flex-grow-1">
                 <BrowserRouter>
                     <Routes>
+
+                        <Route path="/admin" element={<AdminPage/>}/>
+                        <Route path="/admin/all_categories" element={<CategoriesPage />}/>
+                        <Route path="/admin/all_categories" element={<ProductPage categoryId="1"/>} />
+
                         <Route path="/sign_in" element={<SignInUp/>}/>
                         <Route path="/profile" element={<Profile/>} />
 

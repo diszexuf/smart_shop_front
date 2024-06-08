@@ -1,8 +1,8 @@
 import {Container, Carousel, Image} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import advertisImg1 from './Huawei_Mate_20lite_717x351_new_v2.jpg'
-import advertisImg2 from './laptop_discount.jpg'
-import advertisImg3 from './1n04fhhk.jpg'
+import advertisImg1 from './Frame 8.svg'
+import advertisImg2 from './Frame 9.svg'
+import advertisImg3 from './Frame 10.svg'
 import './Home.css'
 import ProductCard from "../../components/ProductCard/ProductCard.jsx";
 

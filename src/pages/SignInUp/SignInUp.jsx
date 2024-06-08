@@ -65,8 +65,9 @@ const SignInUp = () => {
 
                 console.log(data.user);
 
-                if (response.ok && data.token !== "") {
-                    localStorage.setItem('token', data.token);
+                if (response.ok && localStorage.getItem('token')) {
+                    localStorage.setItem('token', JSON.stringify(data.token));
+                    console.log(data.token);
                     setUser(data.user);
                     setMessage({ type: 'success', text: isLogin ? 'Вход выполнен успешно!' : 'Регистрация прошла успешно!' });
                     navigate('/profile');
