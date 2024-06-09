@@ -1,5 +1,4 @@
 import {Accordion, Button} from 'react-bootstrap';
-import './Sidebar.css';
 import PropTypes from 'prop-types';
 import AccordionCheck from '../AccordionCheck/AccordionCheck.jsx';
 import {useState, useEffect} from 'react';
@@ -18,7 +17,7 @@ function SideBar(props) {
 
     function handleMinPriceChange(value) {
         setMinPrice(value);
-    };
+    }
 
     function handleMaxPriceChange(value) {
         setMaxPrice(value);
@@ -110,7 +109,7 @@ function SideBar(props) {
     }
 
     return (
-        <div className='sidebar'>
+        <div className='sidebar' style={{marginRight: 30, width: 300}}>
             <PriceForm
                 title="Цена"
                 minPrice={prices[0]}

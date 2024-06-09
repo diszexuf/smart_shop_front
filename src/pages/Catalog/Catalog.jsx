@@ -23,14 +23,14 @@ function Catalog(props) {
                 </Box>
                 <div></div>
                 <Box className="product-wrapper">
-                    {products.map((product) => (
+                    {products.length !== 0 ? products.map((product) => (
                         <ProductCard
                             key={product.id}
                             productId={product.id}
                             model={product.title}
                             price={product.price}
                         />
-                    ))}
+                    )) : <div>Список товаров пуст</div>}
                 </Box>
             </div>
         </Container>

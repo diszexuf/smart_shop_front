@@ -1,8 +1,10 @@
+import {Container} from "react-bootstrap";
+
 function ProductsPage() {
     return(
-        <>
-            <h1>ProductPage</h1>
-        </>
+        <Container>
+            <h1 className='m-3'>Продукты</h1>
+        </Container>
     );
 }
 
