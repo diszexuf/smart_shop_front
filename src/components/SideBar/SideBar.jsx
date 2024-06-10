@@ -10,6 +10,7 @@ const filtersUrl = `${apiUrl}/filters`;
 const productListUrl = `${apiUrl}/all_products`;
 
 function SideBar(props) {
+
     const {categoryIdSB, onHandleProductChange} = props;
 
     const [minPrice, setMinPrice] = useState('');
@@ -38,7 +39,7 @@ function SideBar(props) {
                 data.forEach(filter => filter.values.sort((a, b) => parseInt(a) - parseInt(b)));
 
                 setFilters(data);
-                await findProducts();
+                await findAllProducts();
             } catch (error) {
                 console.log(error);
             }
@@ -69,13 +70,36 @@ function SideBar(props) {
 
     const resetCheckboxes = () => {
         setSelectedChoices([]);
-        setMinPrice('0');
-        setMaxPrice('100000000');
+        setMinPrice(prices[0]);
+        setMaxPrice(prices[1]);
 
         //todo исправить баг со сбросом цены только после 2 нажатия
         console.log('CLICK RESET', minPrice, maxPrice);
-        findProducts()
+        findAllProducts()
     };
+
+
+
+    async function findAllProducts() {
+        const params = new URLSearchParams();
+        params.append('categoryId', categoryIdSB);
+        params.append('minPrice', 0);
+        params.append('maxPrice', 1000000);
+
+        const url = `${productListUrl}?${params.toString()}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            onHandleProductChange(data);
+
+            const allPrices = data.map(val => val.price).sort();
+            setPrices([allPrices[0], allPrices[allPrices.length - 1]]);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     // поиск товаров по криетриям
@@ -92,17 +116,13 @@ function SideBar(props) {
         params.append('minPrice', minPrice);
         params.append('maxPrice', maxPrice);
 
-        // console.log(params);
         const url = `${productListUrl}?${params.toString()}`;
 
         try {
             const response = await fetch(url);
             const data = await response.json();
             onHandleProductChange(data);
-            const allPrices = data.map(val => val.price).sort();
-            setPrices([allPrices[0], allPrices[allPrices.length - 1]]);
 
-            console.log('DEBUG', data);
         } catch (error) {
             console.log(error);
         }

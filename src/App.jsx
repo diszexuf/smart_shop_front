@@ -28,7 +28,7 @@ function App() {
 
                         <Route path="/admin" element={<AdminPage/>}/>
                         <Route path="/admin/all_categories" element={<CategoriesPage />}/>
-                        <Route path="/admin/all_categories" element={<ProductPage categoryId="1"/>} />
+                        <Route path="/admin/category_products" element={<ProductPage categoryId="1"/>} />
 
                         <Route path="/sign_in" element={<SignInUp/>}/>
                         <Route path="/profile" element={<Profile/>} />

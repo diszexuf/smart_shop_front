@@ -69,6 +69,25 @@ function CategoriesPage() {
         })();
     }
 
+    function handleDeleteClick(categoryId) {
+        (async () => {
+            try {
+                const response = await fetch(`https://localhost:8081/api/v1/categories/delete_${categoryId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    setCategories(categories.filter(cat => cat.id !== categoryId));
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }
+
     return (
         <Container className='m-5'>
             <h1 className='m-5'>Категории</h1>
@@ -111,13 +130,15 @@ function CategoriesPage() {
                                 ) : (
                                     <>
                                         <Button variant='secondary' onClick={() => handleEditClick(category)}>Редактировать</Button>
-                                        <Button variant="danger m-3">Удалить категорию</Button>
+                                        <Button variant="danger m-3" onClick={() => handleDeleteClick(category.id)}>Удалить категорию</Button>
                                     </>
                                 )}
                             </Box>
                         </ListGroup.Item>
                     ))}
                 </ListGroup>
+
+
             </Box>
         </Container>
     )
