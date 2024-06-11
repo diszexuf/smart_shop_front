@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Form, Button, Col, Row, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const SignInUp = () => {
-    const [isLogin, setIsLogin] = useState(true);
+const Login = () => {
     const [message, setMessage] = useState(null);
     const [formValues, setFormValues] = useState({
         username: '',
-        password: '',
-        confirmPassword: ''
+        password: ''
     });
     const [formErrors, setFormErrors] = useState({});
-    const [user, setUser] = useState({});
-    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,12 +27,6 @@ const SignInUp = () => {
 
         if (!formValues.password) {
             errors.password = 'Пароль обязателен';
-        } else if (formValues.password.length < 6) {
-            errors.password = 'Пароль должен быть не менее 6 символов';
-        }
-
-        if (!isLogin && formValues.password !== formValues.confirmPassword) {
-            errors.confirmPassword = 'Пароли должны совпадать';
         }
 
         return errors;
@@ -47,8 +36,7 @@ const SignInUp = () => {
         e.preventDefault();
         const errors = validate();
         if (Object.keys(errors).length === 0) {
-
-            const url = isLogin ? 'https://localhost:8081/auth/login' : 'https://localhost:8081/auth/register';
+            const url = 'https://localhost:8081/auth/login';
             const payload = {
                 username: formValues.username,
                 password: formValues.password,
@@ -62,22 +50,19 @@ const SignInUp = () => {
                     body: JSON.stringify(payload)
                 });
                 const data = await response.json();
-
-                console.log(data.user);
+                console.log(data);
 
                 if (response.ok) {
-                    localStorage.setItem('token', JSON.stringify(data.token));
-                    localStorage.setItem('role', JSON.stringify(data.authorities.authority));
-
-                    console.log(data.token);
-                    setUser(data.user);
-                    setMessage({ type: 'success', text: isLogin ? 'Вход выполнен успешно!' : 'Регистрация прошла успешно!' });
+                    localStorage.setItem('token', JSON.stringify(data.jwt));
+                    localStorage.setItem('role', data.user.authorities[0].authority);
+                    localStorage.setItem('username', JSON.parse(data.user.username));
+                    setMessage({ type: 'success', text: 'Вход выполнен успешно!' });
                     navigate('/profile');
                 } else {
-                    console.log(response);
                     setMessage({ type: 'danger', text: data.message || 'Неверный логин или пароль' });
                 }
             } catch (error) {
+                console.log(error)
                 setMessage({ type: 'danger', text: 'Произошла ошибка при подключении к серверу' });
             }
             setFormErrors({});
@@ -86,18 +71,12 @@ const SignInUp = () => {
         }
     };
 
-    const toggleMode = () => {
-        setIsLogin(!isLogin);
-        setFormErrors({});
-        setMessage(null);
-    };
-
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100">
             <Container>
                 <Row className="justify-content-md-center">
                     <Col md={6}>
-                        <h2>{isLogin ? 'Войти' : 'Регистрация'}</h2>
+                        <h2>Войти</h2>
                         {message && (
                             <Alert variant={message.type}>
                                 {message.text}
@@ -132,31 +111,15 @@ const SignInUp = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            {!isLogin && (
-                                <Form.Group controlId="formConfirmPassword">
-                                    <Form.Label>Подтвердите пароль</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        name="confirmPassword"
-                                        value={formValues.confirmPassword}
-                                        onChange={handleChange}
-                                        isInvalid={!!formErrors.confirmPassword}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {formErrors.confirmPassword}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                            )}
-
                             <Button className="mt-3" variant="primary" type="submit">
-                                {isLogin ? 'Войти' : 'Регистрация'}
+                                Войти
                             </Button>
                             <Button
                                 className="mt-3 ml-3"
                                 variant="link"
-                                onClick={toggleMode}
+                                onClick={() => navigate('/register')}
                             >
-                                {isLogin ? 'У меня нет аккаунта' : 'У меня уже есть аккаунт'}
+                                У меня нет аккаунта
                             </Button>
                         </Form>
                     </Col>
@@ -166,4 +129,4 @@ const SignInUp = () => {
     );
 };
 
-export default SignInUp;
+export default Login;

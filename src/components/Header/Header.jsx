@@ -6,14 +6,14 @@ import {useEffect, useState} from "react";
 
 function Header() {
 
-    const [profileLink, setProfileLink] = useState('/sign_in');
+    const [profileLink, setProfileLink] = useState('/login');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             setProfileLink('/profile');
         } else {
-            setProfileLink('/sign_in');
+            setProfileLink('/login');
         }
     }, []);
 

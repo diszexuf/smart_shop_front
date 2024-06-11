@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, ListGroup, Button, Form, Modal } from "react-bootstrap";
 import { Box } from "@mui/material";
 
-function ProductsPage({ categoryId }) {
+function ProductsOfCategoriesPage({ categoryId }) {
     const [products, setProducts] = useState([]);
     const [editingProductId, setEditingProductId] = useState(null);
     const [editingProductTitle, setEditingProductTitle] = useState('');
@@ -146,4 +146,4 @@ function ProductsPage({ categoryId }) {
     );
 }
 
-export default ProductsPage;
+export default ProductsOfCategoriesPage;

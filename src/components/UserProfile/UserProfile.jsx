@@ -23,51 +23,51 @@ const UserProfile = ({ user, onUpdateUser, onLogout }) => {
 
     return (
         <Container>
-            <h2 className="my-4">Личный кабинет</h2>
-            <Form onSubmit={handleSubmit}>
-                <Form.Group as={Row} controlId="formName">
-                    <Form.Label column sm={2}>Имя</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control
-                            type="text"
-                            name="name"
-                            value={formValues.name || ''}
-                            onChange={handleChange}
-                        />
-                    </Col>
-                </Form.Group>
+            {/*<h2 className="my-4">Личный кабинет</h2>*/}
+            {/*<Form onSubmit={handleSubmit}>*/}
+            {/*    <Form.Group as={Row} controlId="formName" className='m-3'>*/}
+            {/*        <Form.Label column sm={2}>Имя</Form.Label>*/}
+            {/*        <Col sm={10}>*/}
+            {/*            <Form.Control*/}
+            {/*                type="text"*/}
+            {/*                name="name"*/}
+            {/*                value={formValues.name || ''}*/}
+            {/*                onChange={handleChange}*/}
+            {/*            />*/}
+            {/*        </Col>*/}
+            {/*    </Form.Group>*/}
 
-                <Form.Group as={Row} controlId="formEmail">
-                    <Form.Label column sm={2}>Email</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control
-                            type="email"
-                            name="email"
-                            value={formValues.email || ''}
-                            onChange={handleChange}
-                        />
-                    </Col>
-                </Form.Group>
+            {/*    <Form.Group as={Row} controlId="formEmail" className='m-3'>*/}
+            {/*        <Form.Label column sm={2}>Email</Form.Label>*/}
+            {/*        <Col sm={10}>*/}
+            {/*            <Form.Control*/}
+            {/*                type="email"*/}
+            {/*                name="email"*/}
+            {/*                value={formValues.email || ''}*/}
+            {/*                onChange={handleChange}*/}
+            {/*            />*/}
+            {/*        </Col>*/}
+            {/*    </Form.Group>*/}
 
-                <Form.Group as={Row} controlId="formPhone">
-                    <Form.Label column sm={2}>Телефон</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control
-                            type="text"
-                            name="phone"
-                            value={formValues.phone || ''}
-                            onChange={handleChange}
-                        />
-                    </Col>
-                </Form.Group>
+            {/*    <Form.Group as={Row} controlId="formPhone" className='m-3'>*/}
+            {/*        <Form.Label column sm={2}>Телефон</Form.Label>*/}
+            {/*        <Col sm={10}>*/}
+            {/*            <Form.Control*/}
+            {/*                type="text"*/}
+            {/*                name="phone"*/}
+            {/*                value={formValues.phone || ''}*/}
+            {/*                onChange={handleChange}*/}
+            {/*            />*/}
+            {/*        </Col>*/}
+            {/*    </Form.Group>*/}
 
-                <Button className="mt-3" variant="primary" type="submit">
-                    Сохранить изменения
-                </Button>
-            </Form>
-            <Button className="mt-3" variant="secondary" onClick={onLogout}>
-                Выйти
-            </Button>
+            {/*    <Button className="mt-3" variant="primary" type="submit">*/}
+            {/*        Сохранить изменения*/}
+            {/*    </Button>*/}
+            {/*</Form>*/}
+            {/*<Button className="mt-3" variant="secondary" onClick={onLogout}>*/}
+            {/*    Выйти*/}
+            {/*</Button>*/}
         </Container>
     );
 };

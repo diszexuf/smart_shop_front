@@ -1,20 +1,24 @@
-import { Button, Image } from "react-bootstrap";
+import { Button, Image, Modal } from "react-bootstrap";
 import './ProductCard.css';
 import PropTypes from 'prop-types';
 import { Box } from "@mui/material";
 import examImg from '../../pages/Catalog/smart.jpg';
-import { useState } from "react";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 function ProductCard(props) {
     const { model, price, productId } = props;
     const [quantity, setQuantity] = useState(0);
+    const [showModal, setShowModal] = useState(false);
+
+    const location = useLocation();
 
     const handleAddToCart = () => {
         const newQuantity = 1;
         setQuantity(newQuantity);
         console.log(newQuantity);
 
-        const cartArr = JSON.parse(localStorage.getItem('cart'));
+        const cartArr = JSON.parse(localStorage.getItem('cart')) || [];
 
         cartArr.push({
             productTitle: model,
@@ -62,16 +66,25 @@ function ProductCard(props) {
         localStorage.setItem('cart', JSON.stringify(cartArr));
     };
 
+    const handleModalOpen = (e) => {
+        e.preventDefault();
+        setShowModal(true);
+    };
+
+    const handleModalClose = () => {
+        setShowModal(false);
+    };
+
     return (
         <>
             <Box className="card">
                 <Box className="card__top">
-                    <a href="/" className="card__image">
-                        <Image src={examImg} className='card-img' alt='product image' />
+                    <a href={location.pathname.concat(`/${productId}`)} className="card__image" onClick={handleModalOpen}>
+                        <Image src={examImg} className='card-img' alt='product image'/>
                     </a>
                 </Box>
                 <Box className="card__bottom">
-                    <a href="#" className="card__title">
+                    <a href={location.pathname.concat(`/${productId}`)} className="card__title" onClick={handleModalOpen}>
                         {model}
                     </a>
                     <Box className="card__prices">
@@ -88,6 +101,28 @@ function ProductCard(props) {
                     )}
                 </Box>
             </Box>
+
+            <Modal show={showModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{model}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Image src={examImg} className='card-img' alt='product image'/>
+                    <p>Цена: {price}</p>
+
+                </Modal.Body>
+                <Modal.Footer className='d-flex justify-content-center align-items-center'>
+                    {quantity === 0 ? (
+                        <button className="card__add" onClick={handleAddToCart}>В корзину</button>
+                    ) : (
+                        <Box className="quantity-controls">
+                            <Button className="decrement" onClick={decrementQuantity}>-</Button>
+                            <span className="quantity m-3">{quantity}</span>
+                            <Button className="increment" onClick={incrementQuantity}>+</Button>
+                        </Box>
+                    )}
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Form, Button, Col, Row, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const SignInUp = () => {
-    const [isLogin, setIsLogin] = useState(true);
+const Register = () => {
     const [message, setMessage] = useState(null);
     const [formValues, setFormValues] = useState({
         username: '',
@@ -11,10 +10,7 @@ const SignInUp = () => {
         confirmPassword: ''
     });
     const [formErrors, setFormErrors] = useState({});
-    const [user, setUser] = useState({});
-    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -36,7 +32,7 @@ const SignInUp = () => {
             errors.password = 'Пароль должен быть не менее 6 символов';
         }
 
-        if (!isLogin && formValues.password !== formValues.confirmPassword) {
+        if (formValues.password !== formValues.confirmPassword) {
             errors.confirmPassword = 'Пароли должны совпадать';
         }
 
@@ -47,8 +43,7 @@ const SignInUp = () => {
         e.preventDefault();
         const errors = validate();
         if (Object.keys(errors).length === 0) {
-
-            const url = isLogin ? 'https://localhost:8081/auth/login' : 'https://localhost:8081/auth/register';
+            const url = 'https://localhost:8081/auth/register';
             const payload = {
                 username: formValues.username,
                 password: formValues.password,
@@ -63,19 +58,13 @@ const SignInUp = () => {
                 });
                 const data = await response.json();
 
-                console.log(data.user);
-
                 if (response.ok) {
                     localStorage.setItem('token', JSON.stringify(data.token));
                     localStorage.setItem('role', JSON.stringify(data.authorities.authority));
-
-                    console.log(data.token);
-                    setUser(data.user);
-                    setMessage({ type: 'success', text: isLogin ? 'Вход выполнен успешно!' : 'Регистрация прошла успешно!' });
-                    navigate('/profile');
+                    setMessage({ type: 'success', text: 'Регистрация прошла успешно!' });
+                    navigate('/login');
                 } else {
-                    console.log(response);
-                    setMessage({ type: 'danger', text: data.message || 'Неверный логин или пароль' });
+                    setMessage({ type: 'danger', text: data.message || 'Не удалось зарегистрироваться' });
                 }
             } catch (error) {
                 setMessage({ type: 'danger', text: 'Произошла ошибка при подключении к серверу' });
@@ -86,18 +75,12 @@ const SignInUp = () => {
         }
     };
 
-    const toggleMode = () => {
-        setIsLogin(!isLogin);
-        setFormErrors({});
-        setMessage(null);
-    };
-
     return (
         <div className="d-flex justify-content-center align-items-center min-vh-100">
             <Container>
                 <Row className="justify-content-md-center">
                     <Col md={6}>
-                        <h2>{isLogin ? 'Войти' : 'Регистрация'}</h2>
+                        <h2>Регистрация</h2>
                         {message && (
                             <Alert variant={message.type}>
                                 {message.text}
@@ -132,31 +115,29 @@ const SignInUp = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            {!isLogin && (
-                                <Form.Group controlId="formConfirmPassword">
-                                    <Form.Label>Подтвердите пароль</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        name="confirmPassword"
-                                        value={formValues.confirmPassword}
-                                        onChange={handleChange}
-                                        isInvalid={!!formErrors.confirmPassword}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {formErrors.confirmPassword}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                            )}
+                            <Form.Group controlId="formConfirmPassword">
+                                <Form.Label>Подтвердите пароль</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="confirmPassword"
+                                    value={formValues.confirmPassword}
+                                    onChange={handleChange}
+                                    isInvalid={!!formErrors.confirmPassword}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {formErrors.confirmPassword}
+                                </Form.Control.Feedback>
+                            </Form.Group>
 
                             <Button className="mt-3" variant="primary" type="submit">
-                                {isLogin ? 'Войти' : 'Регистрация'}
+                                Регистрация
                             </Button>
                             <Button
                                 className="mt-3 ml-3"
                                 variant="link"
-                                onClick={toggleMode}
+                                onClick={() => navigate('/login')}
                             >
-                                {isLogin ? 'У меня нет аккаунта' : 'У меня уже есть аккаунт'}
+                                У меня уже есть аккаунт
                             </Button>
                         </Form>
                     </Col>
@@ -166,4 +147,4 @@ const SignInUp = () => {
     );
 };
 
-export default SignInUp;
+export default Register;
