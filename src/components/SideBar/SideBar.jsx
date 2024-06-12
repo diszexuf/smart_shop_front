@@ -161,6 +161,6 @@ function SideBar(props) {
 export default SideBar;
 
 SideBar.propTypes = {
-    categoryIdSB: PropTypes.string.isRequired,
+    categoryIdSB: PropTypes.number.isRequired,
 };
 

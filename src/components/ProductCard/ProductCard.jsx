@@ -1,19 +1,27 @@
-import { Button, Image, Modal } from "react-bootstrap";
+import {Alert, Button, Image, ListGroup, Modal, Table} from "react-bootstrap";
 import './ProductCard.css';
 import PropTypes from 'prop-types';
-import { Box } from "@mui/material";
+import {Box} from "@mui/material";
 import examImg from '../../pages/Catalog/smart.jpg';
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function ProductCard(props) {
-    const { model, price, productId } = props;
+    const {model, price, productId} = props;
     const [quantity, setQuantity] = useState(0);
     const [showModal, setShowModal] = useState(false);
+    const [productSpecs, setProductSpecs] = useState({});
 
+    const navigate = useNavigate();
     const location = useLocation();
 
     const handleAddToCart = () => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            navigate('/login', { state: { showAlert: true } });
+        }
+
         const newQuantity = 1;
         setQuantity(newQuantity);
         console.log(newQuantity);
@@ -27,6 +35,7 @@ function ProductCard(props) {
         });
 
         localStorage.setItem('cart', JSON.stringify(cartArr));
+        console.log(localStorage.getItem('cart'))
     };
 
     const incrementQuantity = () => {
@@ -66,6 +75,24 @@ function ProductCard(props) {
         localStorage.setItem('cart', JSON.stringify(cartArr));
     };
 
+    useEffect(() => {
+        async function fetchSpecs() {
+            try {
+                const response = await fetch(`https://localhost:8081/api/v1/products/specs_${productId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setProductSpecs(data);
+                } else {
+                    console.error('Ошибка при загрузке категорий');
+                }
+            } catch (error) {
+                console.error('Ошибка при подключении к серверу:', error);
+            }
+        }
+
+        fetchSpecs();
+    }, []);
+
     const handleModalOpen = (e) => {
         e.preventDefault();
         setShowModal(true);
@@ -79,12 +106,14 @@ function ProductCard(props) {
         <>
             <Box className="card">
                 <Box className="card__top">
-                    <a href={location.pathname.concat(`/${productId}`)} className="card__image" onClick={handleModalOpen}>
+                    <a href={location.pathname.concat(`/${productId}`)} className="card__image"
+                       onClick={handleModalOpen}>
                         <Image src={examImg} className='card-img' alt='product image'/>
                     </a>
                 </Box>
                 <Box className="card__bottom">
-                    <a href={location.pathname.concat(`/${productId}`)} className="card__title" onClick={handleModalOpen}>
+                    <a href={location.pathname.concat(`/${productId}`)} className="card__title"
+                       onClick={handleModalOpen}>
                         {model}
                     </a>
                     <Box className="card__prices">
@@ -108,10 +137,9 @@ function ProductCard(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <Image src={examImg} className='card-img' alt='product image'/>
-                    <p>Цена: {price}</p>
-
-                </Modal.Body>
-                <Modal.Footer className='d-flex justify-content-center align-items-center'>
+                    <Box display="flex" alignItems="center" justifyContent="center">
+                        <p style={{fontWeight: "bold", fontSize: 20}}>Цена: {price}</p>
+                    </Box>
                     {quantity === 0 ? (
                         <button className="card__add" onClick={handleAddToCart}>В корзину</button>
                     ) : (
@@ -121,6 +149,25 @@ function ProductCard(props) {
                             <Button className="increment" onClick={incrementQuantity}>+</Button>
                         </Box>
                     )}
+
+                </Modal.Body>
+                <Modal.Footer className='d-flex justify-content-center align-items-center'>
+                    <Table striped bordered hover>
+                        <thead>
+                        <tr>
+                            <th>Характеристика</th>
+                            <th>Значение</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {Object.entries(productSpecs).map(([key, value]) => (
+                            <tr key={key}>
+                                <td>{key}</td>
+                                <td>{value}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
                 </Modal.Footer>
             </Modal>
         </>

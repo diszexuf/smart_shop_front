@@ -33,13 +33,14 @@ function Catalog(props) {
                     )) : <div>Список товаров пуст</div>}
                 </Box>
             </div>
+
         </Container>
     )
 }
 
 Catalog.propTypes = {
     category: PropTypes.string.isRequired,
-    categoryId: PropTypes.string.isRequired,
+    categoryId: PropTypes.number.isRequired,
 }
 
 export default Catalog;

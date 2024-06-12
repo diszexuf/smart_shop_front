@@ -1,7 +1,6 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import OrderList from "../../components/orderList/OrderList.jsx";
+import {Alert, Button, Col, Container, Form, Row} from "react-bootstrap";
 import React, { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
     const [user, setUser] = useState({
@@ -10,21 +9,23 @@ function Profile() {
         phone: '',
         email: '',
     });
-    const [orders, setOrders] = useState([]);
-    const navigator = useNavigate();
-    //todo статус заказов
-    //todo пикчи
+    const navigate = useNavigate();
+    const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+    const [showAlertError, setShowAlertError] = useState(false);
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
-            navigator('/login')
+            navigate('/login');
         }
         async function fetchUserData() {
             const userData = await fetchUserFromAPI();
-            setUser(userData);
-
-            const userOrders = await fetchOrdersFromAPI();
-            setOrders(userOrders);
+            setUser({
+                fullName: userData.fullName,
+                username: userData.username,
+                phone: userData.phone,
+                email: userData.email,
+            });
+            console.log(user)
         }
 
         fetchUserData();
@@ -32,38 +33,12 @@ function Profile() {
 
     async function fetchUserFromAPI() {
         try {
-            const response = await fetch(`https://localhost:8081/api/v1/users/find_${JSON.parse(localStorage.getItem('username'))}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            const data = await response.json();
-            return data;
+            const response = await fetch(`https://localhost:8081/api/v1/users/find_${localStorage.getItem('username')}`);
+            return await response.json();
         } catch (error) {
             console.log(error);
         }
     }
-
-    async function fetchOrdersFromAPI() {
-        try {
-            const response = await fetch(`https://localhost:8081/users/find_${user.username}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.log(error);
-            return [];
-        }
-    }
-
-    const handleUpdateUser = async (updatedUser) => {
-        setUser(updatedUser);
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -75,20 +50,49 @@ function Profile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Здесь можно добавить логику для отправки обновленных данных пользователя на сервер
-        await handleUpdateUser(user);
+        console.log("Отправляемые данные пользователя:", JSON.stringify(user));
+        try {
+            const response = await fetch('https://localhost:8081/api/v1/users/update_user', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    fullName: user.fullName,
+                    username: user.username,
+                    phone: user.phone,
+                    email: user.email,
+                })
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                setUser(updatedUser);
+                setShowAlertError(true);
+            } else {
+                setShowAlertError(true);
+            }
+        } catch (error) {
+            setShowAlertError(true);
+            console.log(error);
+        }
     };
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('userId');
+        localStorage.removeItem('username');
 
         window.location.href = '/login';
     };
 
     return (
         <Container className='mt-3'>
+            {showAlertSuccess && <Alert variant="success">Данные успешно обновлены</Alert>}
+            {showAlertError && <Alert variant="danger">Произошла ошибка</Alert>}
+
             <h2 className="my-4">Личный кабинет</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group as={Row} controlId="formName" className='m-3'>
@@ -98,18 +102,6 @@ function Profile() {
                             type="text"
                             name="fullName"
                             value={user.fullName || ''}
-                            onChange={handleChange}
-                        />
-                    </Col>
-                </Form.Group>
-
-                <Form.Group as={Row} controlId="formUsername" className='m-3'>
-                    <Form.Label column sm={2}>Логин</Form.Label>
-                    <Col sm={10}>
-                        <Form.Control
-                            type="text"
-                            name="username"
-                            value={user.username || ''}
                             onChange={handleChange}
                         />
                     </Col>
@@ -142,12 +134,13 @@ function Profile() {
                 <Button className="mt-3" variant="primary" type="submit">
                     Сохранить изменения
                 </Button>
+
             </Form>
             <Button className="mt-3" variant="secondary" onClick={handleLogout}>
                 Выйти
             </Button>
 
-            <OrderList classname='mt-5' orders={orders}/>
+            {/*<OrderList classname='mt-5' orders={orders}/>*/}
         </Container>
     );
 }
