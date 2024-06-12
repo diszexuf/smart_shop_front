@@ -15,35 +15,45 @@ function ProductCard(props) {
     const navigate = useNavigate();
     const location = useLocation();
 
+    useEffect(() => {
+        const cart = localStorage.getItem('cart');
+        if (cart) {
+            const cartArr = JSON.parse(cart);
+            const productInCart = cartArr.find(item => item.productId === productId);
+            if (productInCart) {
+                setQuantity(productInCart.productQuantity);
+            }
+        }
+    }, [productId]);
+
     const handleAddToCart = () => {
         const token = localStorage.getItem('token');
 
         if (!token) {
             navigate('/login', { state: { showAlert: true } });
+            return;
         }
 
         const newQuantity = 1;
         setQuantity(newQuantity);
-        console.log(newQuantity);
 
-        const cartArr = JSON.parse(localStorage.getItem('cart')) || [];
+        const cart = localStorage.getItem('cart');
+        const cartArr = cart ? JSON.parse(cart) : [];
 
         cartArr.push({
+            productId,
             productTitle: model,
             productPrice: price,
             productQuantity: newQuantity
         });
 
         localStorage.setItem('cart', JSON.stringify(cartArr));
-        console.log(localStorage.getItem('cart'))
     };
 
     const incrementQuantity = () => {
         setQuantity(prevQuantity => {
             const newQuantity = prevQuantity + 1;
-
             updateCartQuantity(newQuantity);
-
             return newQuantity;
         });
     };
@@ -51,21 +61,25 @@ function ProductCard(props) {
     const decrementQuantity = () => {
         setQuantity(prevQuantity => {
             const newQuantity = prevQuantity > 0 ? prevQuantity - 1 : 0;
-
             updateCartQuantity(newQuantity);
-
             return newQuantity;
         });
     };
 
     const updateCartQuantity = (newQuantity) => {
-        const cartArr = JSON.parse(localStorage.getItem('cart')) || [];
-        const productIndex = cartArr.findIndex(item => item.productTitle === model);
+        const cart = localStorage.getItem('cart');
+        const cartArr = cart ? JSON.parse(cart) : [];
+        const productIndex = cartArr.findIndex(item => item.productId === productId);
 
         if (productIndex !== -1) {
-            cartArr[productIndex].productQuantity = newQuantity;
+            if (newQuantity === 0) {
+                cartArr.splice(productIndex, 1);
+            } else {
+                cartArr[productIndex].productQuantity = newQuantity;
+            }
         } else {
             cartArr.push({
+                productId,
                 productTitle: model,
                 productPrice: price,
                 productQuantity: newQuantity
@@ -91,7 +105,7 @@ function ProductCard(props) {
         }
 
         fetchSpecs();
-    }, []);
+    }, [productId]);
 
     const handleModalOpen = (e) => {
         e.preventDefault();

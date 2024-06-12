@@ -18,6 +18,7 @@ function Profile() {
             navigate('/login');
         }
         async function fetchUserData() {
+
             const userData = await fetchUserFromAPI();
             setUser({
                 fullName: userData.fullName,
@@ -25,7 +26,6 @@ function Profile() {
                 phone: userData.phone,
                 email: userData.email,
             });
-            console.log(user)
         }
 
         fetchUserData();

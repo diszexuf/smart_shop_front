@@ -50,11 +50,12 @@ const Login = () => {
                     body: JSON.stringify(payload)
                 });
                 const data = await response.json();
-
+                console.log(data);
                 if (response.ok) {
                     localStorage.setItem('token', data.jwt);
                     localStorage.setItem('role', data.user.authorities[0].authority);
                     localStorage.setItem('username', data.user.username);
+                    localStorage.setItem('userId', data.user.id);
                     setMessage({type: 'success', text: 'Вход выполнен успешно!'});
                     navigate('/profile');
                 } else {
