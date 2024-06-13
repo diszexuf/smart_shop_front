@@ -43,6 +43,7 @@ function Cart() {
 
     function handleCreateOrder() {
         const token = localStorage.getItem('token');
+
         if (!token) {
             setShowOverlay(true);
             setTimeout(() => setShowOverlay(false), 3000);
