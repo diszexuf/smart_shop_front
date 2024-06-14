@@ -64,7 +64,8 @@ const Register = () => {
                     setMessage({ type: 'success', text: 'Регистрация прошла успешно!' });
                     navigate('/login');
                 } else {
-                    setMessage({ type: 'danger', text: data.message || 'Не удалось зарегистрироваться' });
+                    // setMessage({ type: 'danger', text: 'Не удалось зарегистрироваться' });
+                    setMessage({ type: 'danger', text: 'Пользователь уже существует' });
                 }
             } catch (error) {
                 setMessage({ type: 'danger', text: 'Произошла ошибка при подключении к серверу' });
