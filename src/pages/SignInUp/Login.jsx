@@ -53,7 +53,7 @@ const Login = () => {
                 console.log("data", data);
                 if (response.ok) {
                     localStorage.setItem('token', data.jwt);
-                    localStorage.setItem('role', data.user.authorities[0].authority);
+                    // localStorage.setItem('role', data.user.authorities[0].authority);
                     localStorage.setItem('username', data.user.username);
                     localStorage.setItem('userId', data.user.id);
                     setMessage({type: 'success', text: 'Вход выполнен успешно!'});
@@ -63,7 +63,7 @@ const Login = () => {
                 }
             } catch (error) {
                 console.log(error)
-                setMessage({type: 'danger', text: 'Такой пользователь уже существует'});
+                // setMessage({type: 'danger', text: 'Такой пользователь уже существует'});
             }
             setFormErrors({});
         } else {

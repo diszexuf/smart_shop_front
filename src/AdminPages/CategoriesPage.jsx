@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Button, Container, ListGroup, Form} from "react-bootstrap";
 import {Box} from "@mui/material";
 
-function CategoriesPage() {
+function CategoriesPage({ onCategoryAdded, onCategoryUpdated }) {
     const [categories, setCategories] = useState([]);
     const [editingCategoryId, setEditingCategoryId] = useState(null);
     const [editingCategoryTitle, setEditingCategoryTitle] = useState('');

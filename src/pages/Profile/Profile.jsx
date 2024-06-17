@@ -2,6 +2,8 @@ import {Alert, Button, Col, Container, Form, Row} from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrderList from "../../components/orderList/OrderList.jsx";
+import MaskedInput from "react-text-mask/dist/reactTextMask.js";
+
 
 function Profile() {
     const [user, setUser] = useState({
@@ -124,13 +126,15 @@ function Profile() {
             <h2 className="my-4">Личный кабинет</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group as={Row} controlId="formName" className='m-3'>
-                    <Form.Label column sm={2}>Имя</Form.Label>
+                    <Form.Label column sm={2}>ФИО</Form.Label>
                     <Col sm={10}>
                         <Form.Control
                             type="text"
                             name="fullName"
                             value={user.fullName || ''}
                             onChange={handleChange}
+                            pattern="[A-Za-zА-Яа-яЁё\s]+"
+                            title="Текст должен содержать только буквы"
                         />
                     </Col>
                 </Form.Group>
@@ -150,11 +154,13 @@ function Profile() {
                 <Form.Group as={Row} controlId="formPhone" className='m-3'>
                     <Form.Label column sm={2}>Телефон</Form.Label>
                     <Col sm={10}>
-                        <Form.Control
-                            type="text"
-                            name="phone"
+                        <MaskedInput
+                            mask={['+', '7', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
+                            placeholderChar={'_'}
+                            className="form-control"
                             value={user.phone || ''}
                             onChange={handleChange}
+                            name="phone"
                         />
                     </Col>
                 </Form.Group>

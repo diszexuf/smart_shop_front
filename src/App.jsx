@@ -46,8 +46,7 @@ function App() {
             <main className="flex-grow-1">
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/admin/all_categories" element={<CategoriesPage />} />
-                        <Route path="/admin/category_products" element={<ProductsOfCategoriesPage categoryId="1" />} />
+                        <Route path="/admin/all_categories" element={<CategoriesPage  />} />
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
@@ -64,10 +63,6 @@ function App() {
                 </BrowserRouter>
             </main>
             <Footer/>
-
-
-
-
         </div>
     );
 }

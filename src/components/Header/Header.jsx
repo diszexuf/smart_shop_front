@@ -1,27 +1,29 @@
-import {Navbar, Nav, Form, FormControl, Container, Dropdown} from 'react-bootstrap';
+import {Navbar, Nav, Form, FormControl, Container, Dropdown, Button} from 'react-bootstrap';
 import {ShoppingCart, Person} from '@mui/icons-material';
 import MapIcon from '@mui/icons-material/Map';
 import {useEffect, useState} from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Catalog from "../../pages/Catalog/Catalog.jsx";
-import CategoriesPage from "../../AdminPages/CategoriesPage.jsx";
-import ProductsOfCategoriesPage from "../../AdminPages/ProductsOfCategoriesPage.jsx";
-import Login from "../../pages/SignInUp/Login.jsx";
-import Register from "../../pages/SignInUp/Register.jsx";
-import Profile from "../../pages/Profile/Profile.jsx";
-import Home from "../../pages/Home/Home.jsx";
-import Address from "../../pages/Address/Address.jsx";
-import Cart from "../../pages/Cart/Cart.jsx";
 
 function Header({categories}) {
     const [profileLink, setProfileLink] = useState('/login');
+    const [cartLink, setCartLink] = useState('/login');
+    const [editCategories, setEditCategories] = useState({});
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             setProfileLink('/profile');
+            setCartLink('/cart')
         } else {
             setProfileLink('/login');
+            setCartLink('/login')
+        }
+
+        const role = localStorage.getItem('role');
+        if (role === 'ADMIN') {
+            setEditCategories({
+                title: "Редактировать категории",
+                url: "/admin/all_categories"
+            })
         }
     }, []);
 
@@ -44,6 +46,14 @@ function Header({categories}) {
                                             {category.title}
                                         </Dropdown.Item>
                                     ))}
+                                    {Object.keys(editCategories).length !== 0 && (
+                                        <>
+                                            <Dropdown.Divider/>
+                                            <Dropdown.Item href={editCategories.url}>
+                                                {editCategories.title}
+                                            </Dropdown.Item>
+                                        </>
+                                    )}
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
@@ -56,11 +66,11 @@ function Header({categories}) {
                                 aria-label="Search"
                             />
                         </Form>
-                        <Nav>
+                        <Nav className='d-flex align-items-center'>
                             <Nav.Link href="/addresses">
                                 <MapIcon/>
                             </Nav.Link>
-                            <Nav.Link href="/cart">
+                            <Nav.Link href={cartLink}>
                                 <ShoppingCart/>
                             </Nav.Link>
                             <Nav.Link href={profileLink}>

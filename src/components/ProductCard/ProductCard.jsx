@@ -5,9 +5,12 @@ import {Box} from "@mui/material";
 import examImg from '../../pages/Catalog/smart.jpg';
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 function ProductCard(props) {
-    const {model, price, productId} = props;
+    const {model, price, productId, onDelete, onEdit} = props;
     const [quantity, setQuantity] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [productSpecs, setProductSpecs] = useState({});
@@ -30,7 +33,7 @@ function ProductCard(props) {
         const token = localStorage.getItem('token');
 
         if (!token) {
-            navigate('/login', { state: { showAlert: true } });
+            navigate('/login', {state: {showAlert: true}});
             return;
         }
 
@@ -118,31 +121,37 @@ function ProductCard(props) {
 
     return (
         <>
-            <Box className="card">
-                <Box className="card__top">
-                    <a href={location.pathname.concat(`/${productId}`)} className="card__image"
-                       onClick={handleModalOpen}>
-                        <Image src={examImg} className='card-img' alt='product image'/>
-                    </a>
-                </Box>
-                <Box className="card__bottom">
-                    <a href={location.pathname.concat(`/${productId}`)} className="card__title"
-                       onClick={handleModalOpen}>
-                        {model}
-                    </a>
-                    <Box className="card__prices">
-                        <Box className="card__price">Цена: {price}</Box>
+            <Box>
+                <Box className="card">
+                    <Box className="card__top">
+                        <a href={location.pathname.concat(`/${productId}`)} className="card__image"
+                           onClick={handleModalOpen}>
+                            <Image src={examImg} className='card-img' alt='product image'/>
+                        </a>
                     </Box>
-                    {quantity === 0 ? (
-                        <button className="card__add" onClick={handleAddToCart}>В корзину</button>
-                    ) : (
-                        <Box className="quantity-controls d-flex justify-content-center align-items-center">
-                            <Button className="decrement" onClick={decrementQuantity}>-</Button>
-                            <span className="quantity m-3">{quantity}</span>
-                            <Button className="increment" onClick={incrementQuantity}>+</Button>
+                    <Box className="card__bottom">
+                        <a href={location.pathname.concat(`/${productId}`)} className="card__title"
+                           onClick={handleModalOpen}>
+                            {model}
+                        </a>
+                        <Box className="card__prices">
+                            <Box className="card__price">Цена: {price}</Box>
                         </Box>
-                    )}
+                        {quantity === 0 ? (
+                            <button className="card__add" onClick={handleAddToCart}>В корзину</button>
+                        ) : (
+                            <Box className="quantity-controls d-flex justify-content-center align-items-center">
+                                <Button className="decrement" onClick={decrementQuantity}>-</Button>
+                                <span className="quantity m-3">{quantity}</span>
+                                <Button className="increment" onClick={incrementQuantity}>+</Button>
+                            </Box>
+                        )}
+                    </Box>
                 </Box>
+                <div className=''>
+                    <Button variant="danger" className='w-50' onClick={() => onDelete(productId)}><DeleteIcon/></Button>
+                    <Button variant="primary" className='w-50' onClick={() => onEdit(productId)}><EditIcon/></Button>
+                </div>
             </Box>
 
             <Modal show={showModal} onHide={handleModalClose}>
