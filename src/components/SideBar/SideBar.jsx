@@ -73,7 +73,6 @@ function SideBar(props) {
         setMinPrice(prices[0]);
         setMaxPrice(prices[1]);
 
-        //todo исправить баг со сбросом цены только после 2 нажатия
         console.log('CLICK RESET', minPrice, maxPrice);
         findAllProducts()
     };

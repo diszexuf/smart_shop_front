@@ -72,7 +72,6 @@ function Profile() {
             if (response.ok) {
                 const updatedUser = await response.json();
                 setUser(updatedUser);
-                setShowAlertError(true);
             } else {
                 setShowAlertError(true);
             }

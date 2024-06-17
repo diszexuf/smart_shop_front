@@ -12,23 +12,22 @@ function Catalog(props) {
     const [products, setProducts] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
-    const [currentProduct, setCurrentProduct] = useState(null);
+    const [currentProductId, setCurrentProductId] = useState(null);
 
     const handleAddProduct = () => {
-        setCurrentProduct(null);
+        setCurrentProductId(null);
         setShowModal(true);
     };
 
     const handleEditProduct = (productId) => {
-        const product = products.find((p) => p.id === productId);
-        setCurrentProduct(product);
+        setCurrentProductId(productId);
         setShowModal(true);
     };
 
     const handleSubmit = (product) => {
-        if (currentProduct) {
+        if (currentProductId) {
             // редактирование существующего товара
-            const updatedProducts = products.map((p) => (p.id === currentProduct.id ? product : p));
+            const updatedProducts = products.map((p) => (p.id === currentProductId.id ? product : p));
             setProducts(updatedProducts);
         } else {
             // добавление нового товара
@@ -56,7 +55,7 @@ function Catalog(props) {
                 show={showModal}
                 onHide={() => setShowModal(false)}
                 onSubmit={handleSubmit}
-                product={currentProduct}
+                product={currentProductId}
             />
             <div className='d-flex justify-content-between'>
                 <h1 className='mb-5'>{category}</h1>
@@ -79,7 +78,7 @@ function Catalog(props) {
                             model={product.title}
                             price={product.price}
                             onDelete={handleDelete}
-                            onEdit={handleEdit}
+                            onEdit={handleEditProduct}
                         />
                     )) : <div>Список товаров пуст</div>}
                 </Box>

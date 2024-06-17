@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function ProductForm({ show, onHide, onSubmit, productId }) {
+function ProductForm({ show, onHide, onSubmit, product }) {
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState('');
     const [title, setTitle] = useState('');
@@ -35,9 +35,35 @@ function ProductForm({ show, onHide, onSubmit, productId }) {
         setSpecs(newSpecs);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit({ image, price, title, specs });
+
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('price', price);
+        formData.append('title', title);
+        specs.forEach((spec, index) => {
+            formData.append(`specs[${index}][key]`, spec.key);
+            formData.append(`specs[${index}][value]`, spec.value);
+        });
+
+        console.log()
+
+        try {
+            const response = await fetch('https://localhost:8081/api/v1/products/save_product', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                const data = await response.json();
+                onSubmit(data); // Если требуется обработка ответа
+            } else {
+                console.error('Ошибка при сохранении товара:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка при отправке данных:', error);
+        }
+
         onHide();
     };
 
