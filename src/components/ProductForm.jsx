@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function ProductForm({ show, onHide, onSubmit, product }) {
+function ProductForm({ show, onHide, onSubmit, product, category }) {
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState('');
     const [title, setTitle] = useState('');
@@ -40,14 +40,17 @@ function ProductForm({ show, onHide, onSubmit, product }) {
 
         const formData = new FormData();
         formData.append('image', image);
-        formData.append('price', price);
-        formData.append('title', title);
-        specs.forEach((spec, index) => {
-            formData.append(`specs[${index}][key]`, spec.key);
-            formData.append(`specs[${index}][value]`, spec.value);
-        });
+        formData.append('product', new Blob([JSON.stringify({ price, title })], { type: 'application/json' }));
 
-        console.log()
+        const specsMap = specs.reduce((map, spec) => {
+            map[spec.key] = spec.value;
+            return map;
+        }, {});
+
+        formData.append('specs', new Blob([JSON.stringify(specsMap)], { type: 'application/json' }));
+        formData.append('categoryId', category);
+
+        console.log(specsMap)
 
         try {
             const response = await fetch('https://localhost:8081/api/v1/products/save_product', {

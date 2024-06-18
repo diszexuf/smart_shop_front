@@ -56,6 +56,7 @@ function Catalog(props) {
                 onHide={() => setShowModal(false)}
                 onSubmit={handleSubmit}
                 product={currentProductId}
+                category={categoryId}
             />
             <div className='d-flex justify-content-between'>
                 <h1 className='mb-5'>{category}</h1>
@@ -77,6 +78,7 @@ function Catalog(props) {
                             productId={product.id}
                             model={product.title}
                             price={product.price}
+                            image={product.image}
                             onDelete={handleDelete}
                             onEdit={handleEditProduct}
                         />

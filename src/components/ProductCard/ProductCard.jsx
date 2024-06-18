@@ -2,7 +2,6 @@ import {Alert, Button, Image, ListGroup, Modal, Table} from "react-bootstrap";
 import './ProductCard.css';
 import PropTypes from 'prop-types';
 import {Box} from "@mui/material";
-import examImg from '../../pages/Catalog/smart.jpg';
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 
 function ProductCard(props) {
-    const {model, price, productId, onDelete, onEdit} = props;
+    const {model, price, productId, onDelete, onEdit, image} = props;
     const [quantity, setQuantity] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [productSpecs, setProductSpecs] = useState({});
@@ -126,7 +125,7 @@ function ProductCard(props) {
                     <Box className="card__top">
                         <a href={location.pathname.concat(`/${productId}`)} className="card__image"
                            onClick={handleModalOpen}>
-                            <Image src={examImg} className='card-img' alt='product image'/>
+                            <Image src={`https://localhost:8081${image}`} className='card-img' alt='product image'/>
                         </a>
                     </Box>
                     <Box className="card__bottom">
@@ -159,7 +158,7 @@ function ProductCard(props) {
                     <Modal.Title>{model}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Image src={examImg} className='card-img' alt='product image'/>
+                    <Image src={`https://localhost:8081${image}`} className='card-img' alt='product image'/>
                     <Box display="flex" alignItems="center" justifyContent="center">
                         <p style={{fontWeight: "bold", fontSize: 20}}>Цена: {price}</p>
                     </Box>
