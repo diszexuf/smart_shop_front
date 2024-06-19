@@ -9,6 +9,7 @@ function ProductForm({show, onHide, onSubmit, product, category}) {
     const [specs, setSpecs] = useState([{key: '', value: ''}]);
     const navigate = useNavigate();
 
+
     function unautorizedAction() {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
@@ -16,6 +17,70 @@ function ProductForm({show, onHide, onSubmit, product, category}) {
         localStorage.removeItem('username');
         navigate('/login');
     }
+
+    useEffect(() => {
+        async function fetchProduct() {
+            if (product) {
+                try {
+                    const response = await fetch(`https://localhost:8081/api/v1/products/get_${product}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data);
+                        setPrice(data.price);
+                        setTitle(data.title);
+                    } else if (response.status === 401) {
+                        unautorizedAction();
+                    } else {
+                        console.error('Ошибка при получении товара:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Ошибка при подключении к серверу:', error);
+                }
+            } else {
+                resetForm();
+            }
+        }
+
+        fetchProduct();
+    }, [product]);
+
+    useEffect(() => {
+        async function fetchSpec() {
+            if (product) {
+                try {
+                    const response = await fetch(`https://localhost:8081/api/v1/products/specs_${product}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data);
+                        setSpecs(Object.entries(data).map(([key, value]) => ({ key, value })));
+                    } else if (response.status === 401) {
+                        unautorizedAction();
+                    } else {
+                        console.error('Ошибка при получении характеристик товара:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Ошибка при подключении к серверу:', error);
+                }
+            } else {
+                resetForm();
+            }
+        }
+
+        fetchSpec();
+    }, [product]);
+
+
+
 
     const handleImageChange = (e) => {
         setImage(e.target.files[0]);
