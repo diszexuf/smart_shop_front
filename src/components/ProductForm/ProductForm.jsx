@@ -30,7 +30,6 @@ function ProductForm({show, onHide, onSubmit, product, category}) {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        console.log(data);
                         setPrice(data.price);
                         setTitle(data.title);
                     } else if (response.status === 401) {
@@ -123,8 +122,14 @@ function ProductForm({show, onHide, onSubmit, product, category}) {
         const formData = new FormData();
         if (image) {
             formData.append('image', image);
+        } else {
+
         }
         formData.append('product', new Blob([JSON.stringify({price, title})], {type: 'application/json'}));
+
+        if (product) {
+            formData.append('id', product);
+        }
 
         const specsMap = specs.reduce((map, spec) => {
             map[spec.key] = spec.value;
