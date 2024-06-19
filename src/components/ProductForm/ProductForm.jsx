@@ -60,7 +60,6 @@ function ProductForm({show, onHide, onSubmit, product, category}) {
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        console.log(data);
                         setSpecs(Object.entries(data).map(([key, value]) => ({ key, value })));
                     } else if (response.status === 401) {
                         unautorizedAction();

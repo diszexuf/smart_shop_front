@@ -63,7 +63,7 @@ const Login = () => {
                 }
             } catch (error) {
                 console.log(error)
-                // setMessage({type: 'danger', text: 'Такой пользователь уже существует'});
+                setMessage({type: 'danger', text: data.message || 'Неверный логин или пароль'});
             }
             setFormErrors({});
         } else {

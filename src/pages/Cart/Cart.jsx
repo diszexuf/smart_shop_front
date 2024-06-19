@@ -1,4 +1,4 @@
-import {Button, Container, Overlay, Table} from "react-bootstrap";
+import {Button, Container, Overlay, Table, Toast, ToastContainer} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {Tooltip} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function Cart() {
     const [showOverlay, setShowOverlay] = useState(false);
+    const [showToast, setShowToast] = useState(false);
     const target = useRef(null);
     const [sum, setSum] = useState(0);
     const navigate = useNavigate();
@@ -54,10 +55,10 @@ function Cart() {
 
     async function createOrder() {
         const orderItems = JSON.parse(localStorage.getItem('cart'));
-        const orderArr = orderItems.map(item => ({ // преобразуем элементы корзины в формат, подходящий для OrderItem
+        const orderArr = orderItems.map(item => ({
             productId: item.productId,
             quantity: item.productQuantity
-        }))
+        }));
         const userID = JSON.parse(localStorage.getItem('userId'));
 
         const orderBody = JSON.stringify({
@@ -65,10 +66,9 @@ function Cart() {
             orderDate: new Date().toISOString(),
             orderStatus: "В обработке",
             orderItems: orderArr
-        })
-        console.log(orderBody)
-        try {
+        });
 
+        try {
             const response = await fetch('https://localhost:8081/api/v1/orders/save_order', {
                 method: 'POST',
                 headers: {
@@ -81,6 +81,8 @@ function Cart() {
             if (response.ok) {
                 localStorage.setItem('cart', JSON.stringify([]));
                 setProducts([]);
+                setShowToast(true);
+                setTimeout(() => setShowToast(false), 3000);
             } else {
                 console.log('Ошибка');
             }
@@ -142,6 +144,15 @@ function Cart() {
                     )}
                 </Overlay>
             </div>
+
+            <ToastContainer position="top-center" className="p-3">
+                <Toast show={showToast} onClose={() => setShowToast(false)}>
+                    <Toast.Header>
+                        <strong className="me-auto">Успех</strong>
+                    </Toast.Header>
+                    <Toast.Body>Ваш заказ был успешно оформлен!</Toast.Body>
+                </Toast>
+            </ToastContainer>
         </Container>
     );
 }

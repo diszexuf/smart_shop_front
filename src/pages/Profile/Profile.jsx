@@ -72,7 +72,6 @@ function Profile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Отправляемые данные пользователя:", JSON.stringify(user));
         try {
             const response = await fetch('https://localhost:8081/api/v1/users/update_user', {
                 method: 'PUT',

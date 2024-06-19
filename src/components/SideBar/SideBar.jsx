@@ -73,7 +73,6 @@ function SideBar(props) {
         setMinPrice(prices[0]);
         setMaxPrice(prices[1]);
 
-        console.log('CLICK RESET', minPrice, maxPrice);
         findAllProducts()
     };
 
