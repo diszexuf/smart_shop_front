@@ -89,11 +89,11 @@ function Catalog(props) {
             <div className='d-flex justify-content-between'>
                 <h1 className='mb-5'>{category}</h1>
                 {localStorage.getItem('role') === 'ADMIN' && (
-                <div className='text-end'>
-                    <Button className='m-2' variant="success" onClick={handleAddProduct}>
-                        Добавить товар
-                    </Button>
-                </div>)
+                    <div className='text-end'>
+                        <Button className='m-2' variant="success" onClick={handleAddProduct}>
+                            Добавить товар
+                        </Button>
+                    </div>)
                 }
             </div>
 

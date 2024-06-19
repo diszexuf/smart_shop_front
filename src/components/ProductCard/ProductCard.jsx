@@ -163,7 +163,7 @@ function ProductCard(props) {
                     <Modal.Title>{model}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Image src={`https://localhost:8081${image}`} className='card-img' alt='product image'/>
+                    <Image src={`https://localhost:8081${image}`} className='card-img' alt='product image'/>
                     <Box display="flex" alignItems="center" justifyContent="center">
                         <p style={{fontWeight: "bold", fontSize: 20}}>Цена: {price}</p>
                     </Box>

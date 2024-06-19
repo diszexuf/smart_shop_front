@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import {Modal, Button, Form} from 'react-bootstrap';
 import {useNavigate} from "react-router-dom";
 
-function ProductForm({ show, onHide, onSubmit, product, category }) {
+function ProductForm({show, onHide, onSubmit, product, category}) {
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState('');
     const [title, setTitle] = useState('');
-    const [specs, setSpecs] = useState([{ key: '', value: '' }]);
+    const [specs, setSpecs] = useState([{key: '', value: ''}]);
     const navigate = useNavigate();
 
     function unautorizedAction() {
@@ -16,17 +16,6 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
         localStorage.removeItem('username');
         navigate('/login');
     }
-
-    useEffect(() => {
-        if (product) {
-            setPrice(product.price);
-            setTitle(product.title);
-            setSpecs(Object.entries(product.specs).map(([key, value]) => ({ key, value })));
-
-        } else {
-            resetForm();
-        }
-    }, [product]);
 
     const handleImageChange = (e) => {
         setImage(e.target.files[0]);
@@ -47,7 +36,7 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
     };
 
     const handleAddSpec = () => {
-        setSpecs([...specs, { key: '', value: '' }]);
+        setSpecs([...specs, {key: '', value: ''}]);
     };
 
     const handleRemoveSpec = (index) => {
@@ -60,7 +49,7 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
         setImage(null);
         setPrice('');
         setTitle('');
-        setSpecs([{ key: '', value: '' }]);
+        setSpecs([{key: '', value: ''}]);
     };
 
     const handleSubmit = async (e) => {
@@ -70,21 +59,20 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
         if (image) {
             formData.append('image', image);
         }
-        formData.append('product', new Blob([JSON.stringify({ price, title })], { type: 'application/json' }));
+        formData.append('product', new Blob([JSON.stringify({price, title})], {type: 'application/json'}));
 
         const specsMap = specs.reduce((map, spec) => {
             map[spec.key] = spec.value;
             return map;
         }, {});
 
-        formData.append('specs', new Blob([JSON.stringify(specsMap)], { type: 'application/json' }));
+        formData.append('specs', new Blob([JSON.stringify(specsMap)], {type: 'application/json'}));
         formData.append('categoryId', category);
 
         try {
             const response = await fetch('https://localhost:8081/api/v1/products/save_product', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: formData,
@@ -114,15 +102,15 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="image">
                         <Form.Label>Изображение</Form.Label>
-                        <Form.Control type="file" onChange={handleImageChange} />
+                        <Form.Control type="file" onChange={handleImageChange}/>
                     </Form.Group>
                     <Form.Group controlId="price">
                         <Form.Label>Цена</Form.Label>
-                        <Form.Control type="number" value={price} onChange={handlePriceChange} />
+                        <Form.Control type="number" value={price} onChange={handlePriceChange}/>
                     </Form.Group>
                     <Form.Group controlId="title">
                         <Form.Label>Название</Form.Label>
-                        <Form.Control type="text" value={title} onChange={handleTitleChange} />
+                        <Form.Control type="text" value={title} onChange={handleTitleChange}/>
                     </Form.Group>
                     <Form.Group controlId="specs">
                         <Form.Label>Характеристики</Form.Label>
