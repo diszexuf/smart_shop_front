@@ -122,7 +122,7 @@ function ProductCard(props) {
         <>
             <Box>
                 <Box className="card">
-                    <Box className="card__top">
+                    <Box className="card__top p-3">
                         <a href={location.pathname.concat(`/${productId}`)} className="card__image"
                            onClick={handleModalOpen}>
                             <Image src={`https://localhost:8081${image}`} className='card-img' alt='product image'/>
@@ -147,10 +147,15 @@ function ProductCard(props) {
                         )}
                     </Box>
                 </Box>
-                <div className=''>
-                    <Button variant="danger" className='w-50' onClick={() => onDelete(productId)}><DeleteIcon/></Button>
-                    <Button variant="primary" className='w-50' onClick={() => onEdit(productId)}><EditIcon/></Button>
-                </div>
+                {localStorage.getItem('role') === 'ADMIN' && (
+                    <div className=''>
+                        <Button variant="danger" className='w-50'
+                                onClick={() => onDelete(productId)}><DeleteIcon/></Button>
+                        <Button variant="primary" className='w-50'
+                                onClick={() => onEdit(productId)}><EditIcon/></Button>
+                    </div>
+                )}
+
             </Box>
 
             <Modal show={showModal} onHide={handleModalClose}>
@@ -158,7 +163,7 @@ function ProductCard(props) {
                     <Modal.Title>{model}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Image src={`https://localhost:8081${image}`} className='card-img' alt='product image'/>
+                <Image src={`https://localhost:8081${image}`} className='card-img' alt='product image'/>
                     <Box display="flex" alignItems="center" justifyContent="center">
                         <p style={{fontWeight: "bold", fontSize: 20}}>Цена: {price}</p>
                     </Box>

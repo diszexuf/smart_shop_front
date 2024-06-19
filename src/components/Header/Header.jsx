@@ -58,14 +58,7 @@ function Header({categories}) {
                             </Dropdown>
                         </Nav>
 
-                        <Form className="d-flex">
-                            <FormControl
-                                type="search"
-                                placeholder="Поиск..."
-                                className="mr-2"
-                                aria-label="Search"
-                            />
-                        </Form>
+
                         <Nav className='d-flex align-items-center'>
                             <Nav.Link href="/addresses">
                                 <MapIcon/>

@@ -4,25 +4,8 @@ import advertisImg1 from './Frame 8.svg'
 import advertisImg2 from './Frame 9.svg'
 import advertisImg3 from './Frame 10.svg'
 import './Home.css'
-import ProductCard from "../../components/ProductCard/ProductCard.jsx";
-import Review from "./Review.jsx";
-
 
 function Home() {
-    const reviews = [
-        {
-            name: "Дмитрий Смирнов",
-            reviewText: "Я всегда покупаю свою мобильную технику в SmartShop. Здесь всегда широкий выбор товаров, и цены всегда конкурентные. Кроме того, персонал всегда готов помочь и ответить на любые вопросы. Я очень доволен своим последним покупкой - смартфон Samsung Galaxy S21 Ultra, и я рекомендую SmartShop всем своим друзьям и коллегам."
-        },
-        {
-            name: "Анна Носкова",
-            reviewText: "Я впервые зашел в SmartShop, и я был приятно удивлен. Магазин очень чистый и хорошо организованный, и персонал был очень вежлив и профессиональен. Я купил новые беспроводные наушники Apple AirPods Pro, и я очень доволен своей покупкой. Я рекомендую SmartShop всем, кто ищет качественную мобильную технику и хорошее обслуживание."
-        },
-        {
-            name: "Ян Кузнецов",
-            reviewText: "Я купил новый смартфон Xiaomi Mi 11 в SmartShop, и я очень доволен своей покупкой. Цена была очень конкурентной, и персонал был очень вежлив и профессиональен. Кроме того, я получил бесплатную защитную пленку и чехол для моего смартфона. Я рекомендую SmartShop всем, кто ищет качественную мобильную технику и хорошее обслуживание."
-        },
-    ]
 
     return (
         <Container className='min-vh-100'>
@@ -38,15 +21,6 @@ function Home() {
                         <Image src={advertisImg2} alt="Third slide" className="carousel-image"/>
                     </Carousel.Item>
                 </Carousel>
-
-                <div style={{marginTop: '10%'}}>
-                    <h1>Отзывы наших покупателей</h1>
-                    <div className="d-flex justify-content-center align-items-center mt-3">
-                        {reviews.map((review, index) => (
-                            <Review key={index} name={review.name} reviewText={review.reviewText}/>
-                        ))}
-                    </div>
-                </div>
 
                 <div className="mt-5 mb-5">
                     <h1>О нашей компании</h1>

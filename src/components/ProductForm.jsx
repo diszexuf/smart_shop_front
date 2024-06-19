@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 function ProductForm({ show, onHide, onSubmit, product, category }) {
@@ -35,11 +35,20 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
         setSpecs(newSpecs);
     };
 
+    const resetForm = () => {
+        setImage(null);
+        setPrice('');
+        setTitle('');
+        setSpecs([{ key: '', value: '' }]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('image', image);
+        if (image) {
+            formData.append('image', image);
+        }
         formData.append('product', new Blob([JSON.stringify({ price, title })], { type: 'application/json' }));
 
         const specsMap = specs.reduce((map, spec) => {
@@ -50,8 +59,6 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
         formData.append('specs', new Blob([JSON.stringify(specsMap)], { type: 'application/json' }));
         formData.append('categoryId', category);
 
-        console.log(specsMap)
-
         try {
             const response = await fetch('https://localhost:8081/api/v1/products/save_product', {
                 method: 'POST',
@@ -59,7 +66,8 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
             });
             if (response.ok) {
                 const data = await response.json();
-                onSubmit(data); // Если требуется обработка ответа
+                onSubmit(data);
+                resetForm();
             } else {
                 console.error('Ошибка при сохранении товара:', response.status);
             }

@@ -33,6 +33,7 @@ function Catalog(props) {
             // добавление нового товара
             setProducts([...products, product]);
         }
+
         setShowModal(false);
     };
 
@@ -40,8 +41,24 @@ function Catalog(props) {
         setProducts(data);
     }
 
-    const handleDelete = (productId) => {
-        // действия по удалению товара
+    const handleDelete = async (productId) => {
+        try {
+            const response = await fetch(`https://localhost:8081/api/v1/products/delete_${productId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (response.ok) {
+                setProducts(products.filter(product => product.id !== productId));
+            } else {
+                console.error('Ошибка при удалении товара');
+            }
+        } catch (error) {
+            console.error('Ошибка при подключении к серверу:', error);
+        }
     };
 
     const handleEdit = (productId) => {
@@ -60,11 +77,13 @@ function Catalog(props) {
             />
             <div className='d-flex justify-content-between'>
                 <h1 className='mb-5'>{category}</h1>
+                {localStorage.getItem('role') === 'ADMIN' && (
                 <div className='text-end'>
                     <Button className='m-2' variant="success" onClick={handleAddProduct}>
                         Добавить товар
                     </Button>
-                </div>
+                </div>)
+                }
             </div>
 
             <div className="d-flex">
