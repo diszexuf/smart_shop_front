@@ -5,7 +5,7 @@ import {Box} from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar.jsx";
 import ProductCard from '../../components/ProductCard/ProductCard.jsx'
 import {useState} from "react";
-import ProductForm from "../../components/ProductForm.jsx";
+import ProductForm from "../../components/ProductForm/ProductForm.jsx";
 import {useNavigate} from "react-router-dom";
 
 function Catalog(props) {

@@ -16,6 +16,14 @@ function Profile() {
     const [showAlertSuccess, setShowAlertSuccess] = useState(false);
     const [showAlertError, setShowAlertError] = useState(false);
 
+    function unautorizedAction() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        navigate('/login');
+    }
+
     useEffect(() => {
         if (!localStorage.getItem('token')) {
             navigate('/login');
@@ -36,8 +44,19 @@ function Profile() {
 
     async function fetchUserFromAPI() {
         try {
-            const response = await fetch(`https://localhost:8081/api/v1/users/find_${localStorage.getItem('username')}`);
-            return await response.json();
+            const response = await fetch(`https://localhost:8081/api/v1/users/find_${localStorage.getItem('username')}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            });
+
+            if (response.ok) {
+                return await response.json();
+            } else if (response.status === 401) {
+                unautorizedAction();
+            }
         } catch (error) {
             console.log(error);
         }
@@ -72,6 +91,8 @@ function Profile() {
             if (response.ok) {
                 const updatedUser = await response.json();
                 setUser(updatedUser);
+            } else if (response.status === 401) {
+                unautorizedAction();
             } else {
                 setShowAlertError(true);
             }

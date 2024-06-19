@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {BrowserRouter, Route, Routes, useParams} from "react-router-dom";
 import CategoriesPage from "./AdminPages/CategoriesPage.jsx";
-import ProductsOfCategoriesPage from "./AdminPages/ProductsOfCategoriesPage.jsx";
 import Login from "./pages/SignInUp/Login.jsx";
 import Register from "./pages/SignInUp/Register.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
