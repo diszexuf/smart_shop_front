@@ -50,7 +50,7 @@ const Login = () => {
                     body: JSON.stringify(payload)
                 });
                 const data = await response.json();
-                console.log("data", data);
+
                 if (response.ok) {
                     localStorage.setItem('token', data.jwt);
                     localStorage.setItem('role', data.user.authorities[0].authority);

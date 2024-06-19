@@ -1,11 +1,32 @@
 import React, {useEffect, useState} from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import {useNavigate} from "react-router-dom";
 
 function ProductForm({ show, onHide, onSubmit, product, category }) {
     const [image, setImage] = useState(null);
     const [price, setPrice] = useState('');
     const [title, setTitle] = useState('');
     const [specs, setSpecs] = useState([{ key: '', value: '' }]);
+    const navigate = useNavigate();
+
+    function unautorizedAction() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        navigate('/login');
+    }
+
+    useEffect(() => {
+        if (product) {
+            setPrice(product.price);
+            setTitle(product.title);
+            setSpecs(Object.entries(product.specs).map(([key, value]) => ({ key, value })));
+
+        } else {
+            resetForm();
+        }
+    }, [product]);
 
     const handleImageChange = (e) => {
         setImage(e.target.files[0]);
@@ -62,12 +83,18 @@ function ProductForm({ show, onHide, onSubmit, product, category }) {
         try {
             const response = await fetch('https://localhost:8081/api/v1/products/save_product', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
                 body: formData,
             });
             if (response.ok) {
                 const data = await response.json();
                 onSubmit(data);
                 resetForm();
+            } else if (response.status === 401) {
+                unautorizedAction();
             } else {
                 console.error('Ошибка при сохранении товара:', response.status);
             }

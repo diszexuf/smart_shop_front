@@ -6,13 +6,22 @@ import SideBar from "../../components/SideBar/SideBar.jsx";
 import ProductCard from '../../components/ProductCard/ProductCard.jsx'
 import {useState} from "react";
 import ProductForm from "../../components/ProductForm.jsx";
+import {useNavigate} from "react-router-dom";
 
 function Catalog(props) {
     const {category, categoryId} = props;
     const [products, setProducts] = useState([]);
-
     const [showModal, setShowModal] = useState(false);
     const [currentProductId, setCurrentProductId] = useState(null);
+    const navigate = useNavigate();
+
+    function unautorizedAction() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        navigate('/login');
+    }
 
     const handleAddProduct = () => {
         setCurrentProductId(null);
@@ -53,6 +62,8 @@ function Catalog(props) {
 
             if (response.ok) {
                 setProducts(products.filter(product => product.id !== productId));
+            } else if (response.status === 401) {
+                unautorizedAction();
             } else {
                 console.error('Ошибка при удалении товара');
             }
