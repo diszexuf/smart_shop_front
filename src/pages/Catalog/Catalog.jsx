@@ -34,14 +34,14 @@ function Catalog(props) {
     };
 
     const handleSubmit = (product) => {
-        if (currentProductId) {
+        // if (currentProductId) {
             // редактирование существующего товара
-            const updatedProducts = products.map((p) => (p.id === currentProductId.id ? product : p));
-            setProducts(updatedProducts);
-        } else {
+            // const updatedProducts = products.map((p) => (p.id === currentProductId.id ? product : p));
+            // setProducts(updatedProducts);
+        // } else {
             // добавление нового товара
             setProducts([...products, product]);
-        }
+        // }
 
         setShowModal(false);
     };
