@@ -4,7 +4,7 @@ import './Catalog.css'
 import {Box} from "@mui/material";
 import SideBar from "../../components/SideBar/SideBar.jsx";
 import ProductCard from '../../components/ProductCard/ProductCard.jsx'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ProductForm from "../../components/ProductForm/ProductForm.jsx";
 import {useNavigate} from "react-router-dom";
 
@@ -14,6 +14,10 @@ function Catalog(props) {
     const [showModal, setShowModal] = useState(false);
     const [currentProductId, setCurrentProductId] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+
+    }, []);
 
     function unautorizedAction() {
         localStorage.removeItem('token');
@@ -34,14 +38,14 @@ function Catalog(props) {
     };
 
     const handleSubmit = (product) => {
-        // if (currentProductId) {
+        if (currentProductId) {
             // редактирование существующего товара
-            // const updatedProducts = products.map((p) => (p.id === currentProductId.id ? product : p));
-            // setProducts(updatedProducts);
-        // } else {
+            const updatedProducts = products.map((p) => (p.id === currentProductId.id ? product : p));
+            setProducts(updatedProducts);
+        } else {
             // добавление нового товара
             setProducts([...products, product]);
-        // }
+        }
 
         setShowModal(false);
     };
