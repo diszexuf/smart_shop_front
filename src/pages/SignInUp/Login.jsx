@@ -9,6 +9,7 @@ const Login = () => {
         password: ''
     });
     const [formErrors, setFormErrors] = useState({});
+    const [acceptPolicy, setAcceptPolicy] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -35,6 +36,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const errors = validate();
+        if (!acceptPolicy) {
+            setMessage({type: 'danger', text: 'Вы должны принять условия Политики конфиденциальности'});
+            return;
+        }
         if (Object.keys(errors).length === 0) {
             const url = 'https://localhost:8081/auth/login';
             const payload = {
@@ -82,7 +87,8 @@ const Login = () => {
 
     return (
         <div>
-            {showAlert && <Alert variant="warning">Пожалуйста, войдите в систему для добавления товаров в корзину!</Alert>}
+            {showAlert &&
+                <Alert variant="warning">Пожалуйста, войдите в систему для добавления товаров в корзину!</Alert>}
 
             <div className="d-flex justify-content-center align-items-center min-vh-100">
                 <Container>
@@ -123,7 +129,26 @@ const Login = () => {
                                     </Form.Control.Feedback>
                                 </Form.Group>
 
-                                <Button className="mt-3" variant="primary" type="submit">
+                                <Form.Group className="mt-3">
+                                    <Form.Check
+                                        type="checkbox"
+                                        label={(
+                                            <span>
+                                                Я принимаю условия <a href="https://localhost:8081/uploads/policy.txt" target="_blank" rel="noopener noreferrer">Политики конфиденциальности</a>
+                                            </span>
+                                        )}
+
+                                        checked={acceptPolicy}
+                                        onChange={(e) => setAcceptPolicy(e.target.checked)}
+                                    />
+                                </Form.Group>
+
+                                <Button
+                                    className="mt-3"
+                                    variant="primary"
+                                    type="submit"
+                                    disabled={!acceptPolicy}
+                                >
                                     Войти
                                 </Button>
                                 <Button
@@ -139,7 +164,6 @@ const Login = () => {
                 </Container>
             </div>
         </div>
-
     );
 };
 
