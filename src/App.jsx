@@ -12,6 +12,7 @@ import Address from "./pages/Address/Address.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import Catalog from "./pages/Catalog/Catalog.jsx";
 import {useEffect, useState} from "react";
+import PolicyPage from "./pages/PolicyPage.jsx";
 
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
     }, []);
 
 
+
+
     return (
         <div className="d-flex flex-column min-vh-100">
             <Header categories={categories}/>
@@ -46,6 +49,7 @@ function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/admin/all_categories" element={<CategoriesPage  />} />
+                        <Route path="/policy" element={<PolicyPage  />} />
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />

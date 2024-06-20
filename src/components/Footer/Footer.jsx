@@ -21,7 +21,7 @@ function Footer() {
                     <Col md={4}>
                         <h5>Полезные ссылки</h5>
                         <ul className="list-unstyled">
-                            <li><a href="#privacy" className="text-white">Политика конфиденциальности</a></li>
+                            <li><a href="/policy" className="text-white">Политика конфиденциальности</a></li>
                             <li><a href="#terms" className="text-white">Условия использования</a></li>
                             <li><a href="#support" className="text-white">Поддержка</a></li>
                         </ul>

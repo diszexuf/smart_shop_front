@@ -134,7 +134,7 @@ const Login = () => {
                                         type="checkbox"
                                         label={(
                                             <span>
-                                                Я принимаю условия <a href="https://localhost:8081/uploads/policy.txt" target="_blank" rel="noopener noreferrer">Политики конфиденциальности</a>
+                                                Я принимаю условия <a href="/policy" target="_blank" rel="noopener noreferrer">Политики конфиденциальности</a>
                                             </span>
                                         )}
 

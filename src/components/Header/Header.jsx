@@ -27,6 +27,7 @@ function Header({categories}) {
         }
     }, []);
 
+
     return (
         <>
             <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
