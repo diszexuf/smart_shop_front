@@ -8,6 +8,7 @@ function Header({categories}) {
     const [cartLink, setCartLink] = useState('/login');
     const [editCategories, setEditCategories] = useState({});
 
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
